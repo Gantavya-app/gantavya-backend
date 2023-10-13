@@ -1,0 +1,1 @@
+# Serilaize data so that it helps to send json formatted data in api endpoint
