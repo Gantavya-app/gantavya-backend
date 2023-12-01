@@ -16,13 +16,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
+from django.conf import settings
+from django.conf.urls.static import static
+import base.views as views
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-
-
     path('api/users/', include('base.api.urls.user_urls')),
 
+    path("", views.create_landmark, name="create_landmark"),
+    path('landmark/<int:landmark_id>/', views.landmark_detail, name='landmark_detail'),
+    path('upload_photo/<int:landmark_id>/', views.upload_photo, name='upload_photo'),
+    path('delete_photo/<int:photo_id>/', views.delete_photo, name='delete_photo'),
 
-    # 
+
+    
 ]
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
