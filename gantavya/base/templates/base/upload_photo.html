@@ -18,7 +18,24 @@
     <button type="submit">Upload Photo</button>
   </form>
 
+  <h2>Available Photos:</h2>
+  {% if photos %}
+    <ul>
+      {% for photo in photos %}
+        <li>
+          <img src="{{ photo.photo.url }}" alt="Landmark Photo" style="width: 300px; height: 200px;">
+          <form method="post" action="{% url 'delete_photo' photo.id %}" style="display: inline;">
+            {% csrf_token %}
+            <button type="submit">Delete</button>
+          </form>
+        </li>
+      {% endfor %}
+    </ul>
+  {% endif %}
+
   <a href="{% url 'landmark_detail' landmark_id=landmark.id %}">Back to Landmark Details</a>
+  <a href="{% url 'create_landmark' %}">Create New Landmark</a>
+
 
 </body>
 </html>

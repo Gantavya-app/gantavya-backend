@@ -30,17 +30,8 @@
   {% else %}
     <p>No photos available for this landmark.</p>
   {% endif %}
-
-  <h2>Upload Photo</h2>
-  <form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    
-    {{ photo_form.as_p }}
-
-    <button type="submit">Upload Photo</button>
-  </form>
-
-  <a href="{% url 'upload_photo' landmark_id=landmark.id %}">Back to Landmark Details</a>
+  <a href="{% url 'upload_photo' landmark_id=landmark.id %}">Upoad Photo for {{landmark.name}}</a>
+  <a href="{% url 'create_landmark' %}">Create New Landmark</a>
 
 </body>
 </html>
