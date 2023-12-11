@@ -1,18 +1,15 @@
-
 {% extends 'base/index.html' %}
 {% load static %}
 
 {% block title %} Create Landmark {% endblock %}
 
-{% block body %} 
-  <h1>Create a New Landmark</h1>
+{% block body %}
+<h1>Create a New Landmark</h1>
 
-  <form method="post">
-    {% csrf_token %}
-    
-    {{ form.as_p }}
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
 
-    <button type="submit">Create Landmark</button>
-  </form>
+  <button type="submit">Create Landmark</button>
+</form>
 
 {% endblock %}
