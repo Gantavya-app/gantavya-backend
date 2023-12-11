@@ -74,6 +74,7 @@ def landmark_list(request):
         photo = landmark.photos.all()[:2]
         photos[landmark.id] = photo
     # photos = {'1':[image_1, image_2], '2':[image_1, image_2]}
+    # print("Photos",photos)
     
     return render(request, 'base/Home.html', {'landmarks':all_landmarks, 'photos':photos})
 

@@ -1,17 +1,25 @@
-
 {% extends 'base/index.html' %}
+{% load mytags %}
 
 {% block title %} Landmarks{% endblock %}
 
 {% block body %} 
 
 {% for landmark in landmarks %}
-<div> {{landmark.name}} </div>
-<div> {{landmark.name}} </div>
-<div> {{landmark.name}} </div>
-<div> {{landmark.name}} </div>
-<div> {{landmark.name}} </div>
+    <div> {{landmark.name}} </div>
+    <div> {{landmark.address}} </div>
+    <div> {{landmark.type}} </div>
+    <div> {{landmark.description}} </div>
 
+    {% for key, value in photos.items %}
+        {% if landmark.id == key %}
+            {% for photo in value %}
+            <img src="{{ photo.photo.url }}" alt="Landmark Photo" style="width: auto; height: 300px;">
+            {% endfor %}
+        {% endif %}
+    {% endfor %}
+
+    <br><br>
 {% endfor %}
 
 {% endblock %}
