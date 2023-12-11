@@ -1,10 +1,17 @@
 
 {% extends 'base/index.html' %}
-{% load static %}
 
-{% block title %} Create Landmark {% endblock %}
+{% block title %} Landmarks{% endblock %}
 
 {% block body %} 
 
+{% for landmark in landmarks %}
+<div> {{landmark.name}} </div>
+<div> {{landmark.name}} </div>
+<div> {{landmark.name}} </div>
+<div> {{landmark.name}} </div>
+<div> {{landmark.name}} </div>
+
+{% endfor %}
 
 {% endblock %}
