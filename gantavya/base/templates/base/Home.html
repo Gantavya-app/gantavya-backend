@@ -3,23 +3,38 @@
 
 {% block title %} Landmarks{% endblock %}
 
-{% block body %} 
+{% block body %}
 
-{% for landmark in landmarks %}
-    <div> {{landmark.name}} </div>
-    <div> {{landmark.address}} </div>
-    <div> {{landmark.type}} </div>
-    <div> {{landmark.description}} </div>
+<h1 class="text-3xl font-semibold tracking-loose text-center">Find your next destination.</h1>
 
-    {% for key, value in photos.items %}
+<main>
+
+    {% for landmark in landmarks %}
+
+    <div class="shadow-md rounded-xl p-4 ">
+        {% for key, value in photos.items %}
         {% if landmark.id == key %}
+        <div class="grid grid-cols-4 gap-4 ">
             {% for photo in value %}
-            <img src="{{ photo.photo.url }}" alt="Landmark Photo" style="width: auto; height: 300px;">
+            <img src="{{ photo.photo.url }}" alt="Landmark Photo"
+                class="w-[300px] rounded-md aspect-square object-cover">
             {% endfor %}
+        </div>
+        <div>
+            <h1 class="text-xl font-semibold my-2 ">
+
+                {{landmark.name}}
+            </h1>
+            <p>{{landmark.address}} </p>
+            <p>{{landmark.type}} </p>
+            <p>{{landmark.description}} </p>
+        </div>
         {% endif %}
-    {% endfor %}
+        {% endfor %}
+    </div>
 
     <br><br>
-{% endfor %}
+    {% endfor %}
+</main>
 
 {% endblock %}

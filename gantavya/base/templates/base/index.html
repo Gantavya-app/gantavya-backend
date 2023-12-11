@@ -21,11 +21,23 @@
     <!-- css -->
     <link rel="stylesheet" href="{% static 'styles/css/globals.css' %}">
     <title>{% block title %} {% endblock %}</title>
-    
+
 </head>
 
 <body>
-    {% block body %} {% endblock %}
+
+    <header class="shadow-sm mb-4 fixed top-0 inset-x-0 bg-white">
+        <nav class="container max-w-7xl mx-auto px-4 py-2 flex w-full items-center gap-2 justify-center">
+            <div class="flex flex-col  items-center gap-2">
+                <img src="{% static 'images/logos/logo_green.png' %}" alt="logo" class="w-16 object-contain ">
+                <h1 class="tracking-widest font-bold text-xs uppercase">Travel Beyond Maps</h1>
+            </div>
+        </nav>
+    </header>
+
+    <section class="p-4 mt-[120px]">
+        {% block body %} {% endblock %}
+    </section>
 </body>
 
 </html>
