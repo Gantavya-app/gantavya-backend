@@ -1,15 +1,26 @@
 {% extends 'base/index.html' %}
 {% load static %}
 
-{% block title %} Create Landmark {% endblock %}
+{% block title %} Add Landmark {% endblock %}
 
 {% block body %}
-<h1>Create a New Landmark</h1>
 
-<form method="post">
-  {% csrf_token %} {{ form.as_p }}
+<main>
 
-  <button type="submit">Create Landmark</button>
-</form>
+  <h1 class="text-2xl font-semibold tracking-loose text-center">Add a new Landmark</h1>
+
+  <div class="my-4 flex items-center justify-center w-full">
+    <form method="post" class="bg-[#fff] p-6 rounded-lg shadow-md flex flex-col items-end">
+
+      {% csrf_token %} {{ form.as_p }}
+
+      <button
+        class=" bg-[#1e90ff] text-white px-2 py-1 rounded hover:bg-blue-800 duration-300 ease-in-out shadow-md hover:shadow-xl mt-4 w-fit"
+        type="submit">
+        <i class="fas fa-plus"></i> Add landmark
+      </button>
+    </form>
+  </div>
+</main>
 
 {% endblock %}

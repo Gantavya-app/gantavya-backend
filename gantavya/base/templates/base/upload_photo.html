@@ -4,33 +4,51 @@
 
 {% block body %}
 
-<h1>Upload Photo for {{ landmark.name }}</h1>
+<p class="my-2">Upload Photo for
+<h1 class="font-semibold text-2xl my-2">{{ landmark.name }}</h1>
+</p>
 
-<form method="post" enctype="multipart/form-data">
-  {% csrf_token %}
+<div class="mt-6 mb-4 grid grid-cols-1 md:grid-cols-4 gap-8">
+  <form method="post" enctype="multipart/form-data"
+    class="bg-[#fff] my-2 p-4 rounded-lg shadow-md flex flex-col items-end col-end-0">
+    {% csrf_token %}
 
-  {{ form.as_p }}
+    {{ form.as_p }}
 
-  <button type="submit">Upload Photo</button>
-</form>
+    <button
+      class=" bg-[#1e90ff] text-white px-2 py-1 rounded hover:bg-blue-800 duration-300 ease-in-out shadow-md hover:shadow-xl mt-4 w-fit"
+      type="submit">
+      <i class="fas fa-cloud-upload-alt"></i>
+      <span>Upload Photo</span>
+    </button>
+  </form>
 
-<h2>Available Photos:</h2>
-{% if photos %}
-<ul>
-  {% for photo in photos %}
-  <li>
-    <img src="{{ photo.photo.url }}" alt="Landmark Photo" style="width: 300px; height: 200px;">
-    <form method="post" action="{% url 'delete_photo' photo.id %}" style="display: inline;">
-      {% csrf_token %}
-      <button type="submit">Delete</button>
-    </form>
-  </li>
-  {% endfor %}
-</ul>
-{% endif %}
+  <div class="bg-[#fff] my-2 p-4 rounded-lg shadow-md col-start-2 col-end-5">
+    <h2 class="font-semibold mb-4">Available Photos:</h2>
+    {% if photos %}
+    <div>
+      {% for photo in photos %}
+      <div>
+        <form method="post" action="{% url 'delete_photo' photo.id %}" style="display: inline;">
+          <img src="{{ photo.photo.url }}" alt="Landmark Photo"
+            class="w-full h-full object-cover aspect-square rounded-md hover:shadow-xl duration-300 ease-in-out cursor-pointer" />
+          {% csrf_token %}
 
-<a href="{% url 'landmark_detail' landmark_id=landmark.id %}">Back to Landmark Details</a>
-<a href="{% url 'create_landmark' %}">Create New Landmark</a>
+          <button type="submit"
+            class="bg-red-500 w-6 shadow-md text-white rounded absolute right-2 top-2 opacity-0 group-hover:opacity-100 group-hover:block duration-300 ease-in-out">
+            <i class="fas fa-remove"></i>
+          </button>
+        </form>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+</div>
 
+<a href="{% url 'landmark_detail' landmark_id=landmark.id %}" class="text-blue-600 hover:text-blue-800">
+  <i class="fas fa-arrow-left"></i>
+  <span>Back to Landmark Details</span>
+</a>
 
 {% endblock %}
