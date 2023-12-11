@@ -4,49 +4,53 @@
 <p>Details for</p>
 <h1 class="text-xl font-semibold">{{landmark.name}}</h1>
 
-<div class="grid grid-cols-2 w-fit gap-2 my-4">
-  <p><strong class="font-semibold">Address:</strong></p>
-  <p>{{ landmark.address }}</p>
-  <p><strong class="font-semibold">Type:</strong></p>
-  <p>{{ landmark.type }}</p>
-  <p><strong class="font-semibold">Description:</strong></p>
-  <!-- if landmark has no description, i want to display 'No details available.' -->
-  <p class="h-48 overflow-y-auto">
-    {% if landmark.description %}
-    {{ landmark.description }}
-    {% else %}
-    No details available.
-    {% endif %}
-  </p>
+<div class="mt-6 grid grid-cols-1 md:grid-cols-2 gap-8">
+  <div class="w-full h-full shadow-md rounded-lg bg-white p-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 ">
+    <p class="col-start-1 col-end-2"><strong class="font-semibold">Address:</strong></p>
+    <p class="col-start-2 col-end-4">{{ landmark.address }}</p>
+    <p class="col-start-1 col-end-2"><strong class="font-semibold">Type:</strong></p>
+    <p class="col-start-2 col-end-4">{{ landmark.type }}</p>
+    <p class="col-start-1 col-end-2"><strong class="font-semibold">Description:</strong></p>
+    <p class="col-start-2 col-end-4 h-48 w-full overflow-y-auto">
+      {% if landmark.description %}
+      {{ landmark.description }}
+      {% else %}
+      No details available.
+      {% endif %}
+    </p>
 
-</div>
-
-<h2 class="font-semibold my-4">Photos:</h2>
-
-{% if photos %}
-<ul class="gap-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
-  {% for photo in photos %}
-  <li>
-    <form method="post" action="{% url 'landmark_detail' photo.id %}" class="relative w-fit group">
-      <img src="{{ photo.photo.url }}" alt="Landmark Photo" class="w-48 object-cover aspect-square rounded-md" />
-      {% csrf_token %}
-      <button type="submit"
-        class="bg-red-500 w-6 shadow-sm text-white rounded absolute right-2 top-2 opacity-0 group-hover:opacity-100 group-hover:block duration-300 ease-in-out">
-        <i class="fas fa-remove"></i>
-      </button>
-    </form>
-  </li>
-  {% endfor %}
-</ul>
-{% else %}
-<p>No photos available for this landmark.</p>
-{% endif %}
-
-<a href="{% url 'upload_photo' landmark_id=landmark.id %}">
-  <div class="text-blue-600 my-4 hover:text-blue-800 duration-300 ease-in-out">
-    <i class="fas fa-cloud-upload-alt"></i>
-    <span>Upoad Photo for {{landmark.name}} </span>
   </div>
-</a>
+
+  <div class="w-full h-full shadow-md rounded-lg bg-white p-4 gap-4 flex flex-col justify-start items-start">
+    <h2 class="font-semibold">Photos:</h2>
+
+    <div class="h-full">
+      {% if photos %}
+      <div class="h-full gap-4 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 h-48 overflow-y-auto">
+        {% for photo in photos %}
+        <form method="post" action="{% url 'landmark_detail' photo.id %}" class="h-full relative group">
+          <img src="{{ photo.photo.url }}" alt="Landmark Photo"
+            class="w-full h-full object-cover aspect-square rounded-md hover:shadow-xl duration-300 ease-in-out cursor-pointer" />
+          {% csrf_token %}
+          <button type="submit"
+            class="bg-red-500 w-6 shadow-md text-white rounded absolute right-2 top-2 opacity-0 group-hover:opacity-100 group-hover:block duration-300 ease-in-out">
+            <i class="fas fa-remove"></i>
+          </button>
+        </form>
+        {% endfor %}
+      </div>
+      {% else %}
+      <p>No photos available for this landmark.</p>
+      {% endif %}
+    </div>
+
+    <div class="mt-auto text-blue-600  hover:text-blue-800 duration-300 ease-in-out">
+      <a href="{% url 'upload_photo' landmark_id=landmark.id %}">
+        <i class="fas fa-cloud-upload-alt"></i>
+        <span>Upload Photos for {{landmark.name}} </span>
+      </a>
+    </div>
+  </div>
+</div>
 
 {% endblock %}
