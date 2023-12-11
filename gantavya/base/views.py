@@ -64,3 +64,7 @@ def create_landmark(request):
         form = LandmarkForm()
 
     return render(request, 'base/create_landmark.html', {'form': form})
+
+
+
+# def landmark_list(request):

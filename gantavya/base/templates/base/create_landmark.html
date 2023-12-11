@@ -1,41 +1,15 @@
-<!DOCTYPE html>
-<html lang="en">
-	<head>
-		<meta charset="UTF-8" />
-		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
-		<!-- tailwind play cdn -->
-		<script src="https://cdn.tailwindcss.com"></script>
-		<!-- fonts -->
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
-			rel="stylesheet"
-		/>
-		<!-- icons -->
+{% extends 'base/index.html' %}
+{% load static %}
 
-		<!-- styles -->
-		<link rel="stylesheet" href="{% static 'styles/globals.css' %}" />
+{% block title %} Create Landmark {% endblock %}
 
-		<title>Create Landmark</title>
+{% block body %}
+<h1>Create a New Landmark</h1>
 
-		<style>
-			* {
-				font-family: "Inter", sans-serif;
-			}
-			body {
-				background-color: #f3f4f6;
-			}
-		</style>
-	</head>
-	<body>
-		<h1 class="text-xl font-semibold">Create a New Landmark</h1>
+<form method="post">
+  {% csrf_token %} {{ form.as_p }}
 
-		<form method="post">
-			{% csrf_token %} {{ form.as_p }}
+  <button type="submit">Create Landmark</button>
+</form>
 
-			<button type="submit">Create Landmark</button>
-		</form>
-	</body>
-</html>
+{% endblock %}
