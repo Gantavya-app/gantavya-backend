@@ -35,7 +35,22 @@
         </nav>
     </header>
 
-    <section class="container mx-auto max-w-7xl px-4 py-8 mt-[120px]">
+    <div class="container mx-auto max-w-7xl mt-[120px] flex items-center justify-center gap-8 py-2">
+        <div
+            class="bg-white rounded-sm px-4 py-2 border-b-4 border-b-transparent hover:border-b-green-400 duration-300 hover:cursor-pointer ease-in-out ">
+            <i class="fas fa-map-location-dot"></i>
+            <span>Add Landmark
+            </span>
+        </div>
+        <div
+            class="bg-white rounded-sm px-4 py-2 border-b-4 border-b-transparent hover:border-b-green-400 duration-300 hover:cursor-pointer ease-in-out ">
+            <i class="fas fa-cloud-upload-alt"></i>
+            <span>Upload Photo
+            </span>
+        </div>
+    </div>
+
+    <section class="container mx-auto max-w-7xl px-4 pt-4 pb-8">
         {% block body %} {% endblock %}
     </section>
 </body>
