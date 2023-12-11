@@ -27,7 +27,7 @@
 <ul class="gap-2 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
   {% for photo in photos %}
   <li>
-    <form method="post" action="{% url 'delete_photo' photo.id %}" class="relative w-fit group">
+    <form method="post" action="{% url 'landmark_detail' photo.id %}" class="relative w-fit group">
       <img src="{{ photo.photo.url }}" alt="Landmark Photo" class="w-48 object-cover aspect-square rounded-md" />
       {% csrf_token %}
       <button type="submit"
