@@ -29,6 +29,8 @@ urlpatterns = [
     path('landmark/<int:landmark_id>/', views.landmark_detail, name='landmark_detail'),
     path('upload_photo/<int:landmark_id>/', views.upload_photo, name='upload_photo'),
     path('delete_photo/<int:photo_id>/', views.delete_photo, name='delete_photo'),
+    path('predict/', views.prediction_view, name='prediction'),
+
 
 
     

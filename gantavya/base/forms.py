@@ -7,8 +7,6 @@ class PhotoUploadForm(forms.ModelForm):
         fields = ['place', 'photo']
 
 
-
-
 class LandmarkForm(forms.ModelForm):
     class Meta:
         model = Landmark

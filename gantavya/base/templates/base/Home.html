@@ -6,11 +6,11 @@
 {% block body %} 
 
 {% for landmark in landmarks %}
-    <div> {{landmark.name}} </div>
-    <div> {{landmark.address}} </div>
-    <div> {{landmark.type}} </div>
-    <div> {{landmark.description}} </div>
-
+    <div> <b>Landmark Name:</b><br>{{landmark.name}} </div>
+    <div> <b>Landmark Address:</b><br>{{landmark.address}} </div>
+    <div> <b>Landmark Type:</b><br>{{landmark.type}} </div>
+    <div> <b>Landmark Description:</b><br>{{landmark.description}} </div>
+    <b>Some photos of Landmark:</b>
     {% for key, value in photos.items %}
         {% if landmark.id == key %}
             {% for photo in value %}
@@ -19,7 +19,7 @@
         {% endif %}
     {% endfor %}
 
-    <br><br>
+    <br><br><br><br>
 {% endfor %}
 
 {% endblock %}
