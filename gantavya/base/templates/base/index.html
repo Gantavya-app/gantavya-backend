@@ -2,63 +2,83 @@
 
 <!DOCTYPE html>
 <html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<!-- tailwindcss -->
+		<script src="https://cdn.tailwindcss.com"></script>
+		<!-- font awesome -->
+		<link
+			rel="stylesheet"
+			href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+		/>
 
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <!-- tailwindcss -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <!-- font awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" />
+		<!-- fonts -->
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
+			rel="stylesheet"
+		/>
 
-    <!-- fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100;200;300;400;500;600;700;800;900&display=swap"
-        rel="stylesheet">
+		<!-- css -->
+		<link rel="stylesheet" href="{% static 'styles/css/globals.css' %}" />
+		<title>{% block title %} {% endblock %}</title>
+	</head>
 
-    <!-- css -->
-    <link rel="stylesheet" href="{% static 'styles/css/globals.css' %}">
-    <title>{% block title %} {% endblock %}</title>
+	<body>
+		<header class="shadow-sm mb-4 fixed top-0 inset-x-0 bg-white">
+			<nav
+				class="container max-w-7xl mx-auto px-4 py-2 flex w-full items-center gap-2 justify-center"
+			>
+				<a href="{% url 'list_landmarks' %}">
+					<div class="flex flex-col items-center gap-2">
+						<img
+							src="{% static 'images/logos/logo_green.png' %}"
+							alt="logo"
+							class="w-16 object-contain"
+						/>
+						<h1 class="tracking-widest font-bold text-xs uppercase">
+							Travel Beyond Maps
+						</h1>
+					</div>
+				</a>
+			</nav>
+		</header>
 
-</head>
+		<div
+			class="container mx-auto max-w-7xl mt-[120px] flex items-center justify-center gap-8 py-2"
+		>
+			<a href="{% url 'create_landmark' %}">
+				<div
+					class="bg-white shadow-md hover:text-blue-800 rounded-sm px-4 py-2 border-b-4 border-b-transparent hover:border-b-blue-700 duration-500 hover:cursor-pointer ease-in-out"
+				>
+					<i class="fas fa-map-location-dot"></i>
+					<span>Add Landmark </span>
+				</div>
+			</a>
+			<a href="{% url 'upload_photo' landmark_id=1 %}">
+				<div
+					class="bg-white shadow-md hover:text-blue-800 rounded-sm px-4 py-2 border-b-4 border-b-transparent hover:border-b-blue-700 duration-300 hover:cursor-pointer ease-in-out"
+				>
+					<i class="fas fa-cloud-upload-alt"></i>
+					<span>Upload Photo </span>
+				</div>
+			</a>
 
-<body>
+			<a href="{% url 'prediction' %}">
+				<div
+					class="bg-white shadow-md hover:text-blue-800 rounded-sm px-4 py-2 border-b-4 border-b-transparent hover:border-b-blue-700 duration-300 hover:cursor-pointer ease-in-out"
+				>
+					<i class="fas fa-cloud-upload-alt"></i>
+					<span>Predict </span>
+				</div>
+			</a>
+		</div>
 
-    <header class="shadow-sm mb-4 fixed top-0 inset-x-0 bg-white">
-        <nav class="container max-w-7xl mx-auto px-4 py-2 flex w-full items-center gap-2 justify-center">
-
-
-            <a href="{% url 'list_landmarks' %}">
-                <div class="flex flex-col  items-center gap-2">
-                    <img src="{% static 'images/logos/logo_green.png' %}" alt="logo" class="w-16 object-contain ">
-                    <h1 class="tracking-widest font-bold text-xs uppercase">Travel Beyond Maps</h1>
-                </div>
-            </a>
-        </nav>
-    </header>
-
-    <div class="container mx-auto max-w-7xl mt-[120px] flex items-center justify-center gap-8 py-2">
-        <a href="{% url 'create_landmark' %}">
-            <div
-                class="bg-white shadow-md hover:text-blue-800 rounded-sm px-4 py-2 border-b-4 border-b-transparent hover:border-b-blue-700 duration-500 hover:cursor-pointer ease-in-out">
-                <i class="fas fa-map-location-dot"></i>
-                <span>Add Landmark
-                </span>
-            </div>
-        </a>
-        <div
-            class="bg-white shadow-md hover:text-blue-800 rounded-sm px-4 py-2 border-b-4 border-b-transparent hover:border-b-blue-700 duration-300 hover:cursor-pointer ease-in-out ">
-            <i class="fas fa-cloud-upload-alt"></i>
-            <span>Upload Photo
-            </span>
-        </div>
-    </div>
-
-    <section class="container mx-auto max-w-7xl px-4 pt-4 pb-8">
-        {% block body %} {% endblock %}
-    </section>
-</body>
-
+		<section class="container mx-auto max-w-7xl px-4 pt-4 pb-8">
+			{% block body %} {% endblock %}
+		</section>
+	</body>
 </html>

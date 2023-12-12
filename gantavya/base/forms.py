@@ -11,12 +11,7 @@ class PhotoUploadForm(ModelForm):
             'photo': FileInput(attrs={'class': 'py-0.5 px-1 ml-auto rounded-sm my-2 border-2 border w-[260px]'}),
         }
 
-<<<<<<< HEAD
-
-class LandmarkForm(forms.ModelForm):
-=======
 class LandmarkForm(ModelForm):
->>>>>>> f3b1bf1380382a2555a7a0c0ea8e23eb0858af7a
     class Meta:
         model = Landmark
         fields = ['name', 'address', 'type', 'description']

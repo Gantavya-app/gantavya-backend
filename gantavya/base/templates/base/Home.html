@@ -1,65 +1,53 @@
-{% extends 'base/index.html' %}
-{% load mytags %}
+{% extends 'base/index.html' %} {% load mytags %} {% block title %} Gantavya |
+Home{% endblock %} {% block body %}
 
-{% block title %} Gantavya | Home{% endblock %}
-
-{% block body %}
-
-<<<<<<< HEAD
-{% for landmark in landmarks %}
-    <div> <b>Landmark Name:</b><br>{{landmark.name}} </div>
-    <div> <b>Landmark Address:</b><br>{{landmark.address}} </div>
-    <div> <b>Landmark Type:</b><br>{{landmark.type}} </div>
-    <div> <b>Landmark Description:</b><br>{{landmark.description}} </div>
-    <b>Some photos of Landmark:</b>
-    {% for key, value in photos.items %}
-        {% if landmark.id == key %}
-            {% for photo in value %}
-            <img src="{{ photo.photo.url }}" alt="Landmark Photo" style="width: auto; height: 300px;">
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-
-    <br><br><br><br>
-{% endfor %}
-=======
-<h1 class="text-3xl font-semibold tracking-loose text-center mt-2 mb-10">Find your next destination.</h1>
+<h1 class="text-3xl font-semibold tracking-loose text-center mt-2 mb-10">
+	Find your next destination.
+</h1>
 
 <main>
-    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+	<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+		{% for landmark in landmarks %}
 
-        {% for landmark in landmarks %}
-
-        <div class="bg-white shadow-md hover:shadow-lg duration-300 ease-in-out rounded-xl p-5 ">
-            <a href="{% url 'landmark_detail' landmark.id  %}">
-                {% for key, value in photos.items %}
-                {% if landmark.id == key %}
-                <div class="flex flex-col gap-1 items-start">
-                    <h1 class="text-xl font-semibold ">
-                        {{landmark.name}}
-                    </h1>
-                    <p class="text-sm bg-gray-200 rounded-full px-4 py-0.5 w-fit">{{landmark.type}} </p>
-                </div>
-                <div class="grid grid-cols-4 gap-4 my-6">
-                    {% for photo in value %}
-                    <img src="{{ photo.photo.url }}" alt="Landmark Photo"
-                        class="w-[300px] rounded-md aspect-square object-cover">
-                    {% endfor %}
-                </div>
-                <div class="flex flex-col items-start gap-2 justify-between ">
-                    <p>
-                        <i class="fas fa-map-marker text-red-500 mr-0.5" aria-hidden="true"></i>
-                        <span class="text-sm font-semibold text-gray-600">{{landmark.address}} </span>
-                    </p>
-                    <p class="text-gray-600 text-sm">{{ landmark.description|truncatechars:100 }} </p>
-                </div>
-                {% endif %}
-                {% endfor %}
-            </a>
-        </div>
-        {% endfor %}
-    </div>
+		<div
+			class="bg-white shadow-md hover:shadow-lg duration-300 ease-in-out rounded-xl p-5"
+		>
+			<a href="{% url 'landmark_detail' landmark.id  %}">
+				{% for key, value in photos.items %} {% if landmark.id == key %}
+				<div class="flex flex-col gap-1 items-start">
+					<h1 class="text-xl font-semibold">{{landmark.name}}</h1>
+					<p class="text-sm bg-gray-200 rounded-full px-4 py-0.5 w-fit">
+						{{landmark.type}}
+					</p>
+				</div>
+				<div class="grid grid-cols-4 gap-4 my-6">
+					{% for photo in value %}
+					<img
+						src="{{ photo.photo.url }}"
+						alt="Landmark Photo"
+						class="w-[300px] rounded-md aspect-square object-cover"
+					/>
+					{% endfor %}
+				</div>
+				<div class="flex flex-col items-start gap-2 justify-between">
+					<p>
+						<i
+							class="fas fa-map-marker text-red-500 mr-0.5"
+							aria-hidden="true"
+						></i>
+						<span class="text-sm font-semibold text-gray-600"
+							>{{landmark.address}}
+						</span>
+					</p>
+					<p class="text-gray-600 text-sm">
+						{{ landmark.description|truncatechars:100 }}
+					</p>
+				</div>
+				{% endif %} {% endfor %}
+			</a>
+		</div>
+		{% endfor %}
+	</div>
 </main>
->>>>>>> f3b1bf1380382a2555a7a0c0ea8e23eb0858af7a
 
 {% endblock %}

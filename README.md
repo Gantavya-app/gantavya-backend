@@ -40,10 +40,5 @@ pip install djangorestframework-simplejwt
 ```
 
 ```bash
-pip install  pip install djangorestframework-simplejwt
-
-```
-
-```bash
 python manage.py runserver
 ```
