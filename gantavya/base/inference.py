@@ -2,7 +2,7 @@ from ultralytics import YOLO
 from PIL import Image
 # from torchvision import transforms
 
-model = YOLO('yolo.pt')
+model = YOLO('/home/boogeyman/Desktop/gantavya-backend/gantavya/yolo.pt')
 
 def predict(image_path, model=model):
     # Load and preprocess the image
