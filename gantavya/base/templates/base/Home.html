@@ -5,24 +5,6 @@
 
 {% block body %}
 
-<<<<<<< HEAD
-{% for landmark in landmarks %}
-    <div> <b>Landmark Name:</b><br>{{landmark.name}} </div>
-    <div> <b>Landmark Address:</b><br>{{landmark.address}} </div>
-    <div> <b>Landmark Type:</b><br>{{landmark.type}} </div>
-    <div> <b>Landmark Description:</b><br>{{landmark.description}} </div>
-    <b>Some photos of Landmark:</b>
-    {% for key, value in photos.items %}
-        {% if landmark.id == key %}
-            {% for photo in value %}
-            <img src="{{ photo.photo.url }}" alt="Landmark Photo" style="width: auto; height: 300px;">
-            {% endfor %}
-        {% endif %}
-    {% endfor %}
-
-    <br><br><br><br>
-{% endfor %}
-=======
 <h1 class="text-3xl font-semibold tracking-loose text-center mt-2 mb-10">Find your next destination.</h1>
 
 <main>
@@ -60,6 +42,5 @@
         {% endfor %}
     </div>
 </main>
->>>>>>> f3b1bf1380382a2555a7a0c0ea8e23eb0858af7a
 
 {% endblock %}
