@@ -1,8 +1,9 @@
-from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PhotoUploadForm, LandmarkForm
 from .models import Landmark, Photos
 from PIL import Image
 from .inference import predict
+from django.shortcuts import render, redirect, get_object_or_404
+
 
 names= {0: 'airport', 1: 'bindabasini', 2: 'hemja', 3: 'museum', 4: 'pumdikot', 5: 'ramghat_gumba', 6: 'ric', 7: 'stupa'}
 
