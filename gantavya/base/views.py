@@ -111,7 +111,7 @@ def prediction_view(request):
 
         message2= f" id {id_landmark}"
 
-        message3 = f"OUT class: {predicted_class} score:{confidence_score} landmark{landmark} photos{photos}"
+        message3 = f"OUT class: {predicted_class} score:{confidence_score} landmark {landmark} photos{photos}"
 
         context = {'predicted_class':predicted_class, 'confidence_score': confidence_score, 'landmark':landmark, 'photos':photos, "message1":message1,"message2":message2, "message3":message3}
         # Pass the prediction results to the template
