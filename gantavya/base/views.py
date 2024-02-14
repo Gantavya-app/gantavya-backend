@@ -1,8 +1,9 @@
+from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PhotoUploadForm, LandmarkForm
 from .models import Landmark, Photos
-from PIL import Image
 from .inference import predict
-from django.shortcuts import render, redirect, get_object_or_404
+from rest_framework.decorators import permission_classes
+from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 names= {0: 'airport', 1: 'bindabasini', 2: 'hemja', 3: 'museum', 4: 'pumdikot', 5: 'ramghat_gumba', 6: 'ric', 7: 'stupa'}
@@ -12,6 +13,8 @@ landmark_id = {0:"PEMA TS'AL Monastery (Hemja Gumba)", 1:"RIC Building, Pashchim
 #map names to landmark_id
 mapping = {0:3, 1:8, 2:1, 3:7, 4:6, 5:4, 6:2, 7:5}
 
+
+@permission_classes([IsAdminUser])
 def upload_photo(request, landmark_id):
     landmark = get_object_or_404(Landmark, pk=landmark_id)
 
@@ -47,7 +50,7 @@ def landmark_detail(request, landmark_id):
     return render(request, 'base/landmark_detail.html', {'landmark': landmark, 'photos': photos, 'photo_form': photo_form})
 
 
-
+@permission_classes([IsAdminUser])
 def delete_photo(request, photo_id):
     photo = get_object_or_404(Photos, pk=photo_id)
     landmark_id = photo.place.id
@@ -61,6 +64,7 @@ def delete_photo(request, photo_id):
     return redirect('landmark_detail', landmark_id=landmark_id)
 
 
+@permission_classes([IsAdminUser])
 def create_landmark(request):
     if request.method == 'POST':
         form = LandmarkForm(request.POST)
