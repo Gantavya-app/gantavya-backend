@@ -13,13 +13,12 @@ from base.inference import predict
 
 
 
-names= {0: 'airport', 1: 'bindabasini', 2: 'hemja', 3: 'museum', 4: 'pumdikot', 5: 'ramghat_gumba', 6: 'ric', 7: 'stupa'}
 
-landmark_id = {0:"PEMA TS'AL Monastery (Hemja Gumba)", 1:"RIC Building, Pashchimanchal Campus", 2:'Pokhara International Airport', 3:"Ramghat Monastery", 4:"Peace Pagoda Stupa", 5:"Pumdikot Shiva Temple", 6:"Gorkha Museum", 7:"Bindabasini Temple" }
+model_idx = ['Pokhara International Airport', 'Bindabasini Temple', 'Bouddha Stupa', "Pema T'SAL Monastery", 'Mountain Museum', 'Gurkha Memorial Museum', 'Pulchowk ICTC Building', 'Pumdikot Shiva Statue', 'Ramghat Monastery', 'WRC RIC Building', 'Peace Stupa', 'Thapathali Building' ]
 
-#map names to landmark_id
-mapping = {0:3, 1:8, 2:1, 3:7, 4:6, 5:4, 6:2, 7:5}
+landmark_idx = {}
 
+mapping = {}
 
 
 # receive image from frontend and save it in backend media file and return status

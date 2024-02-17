@@ -13,7 +13,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['id', 'email', 'name', 'isAdmin'] # fields to be serialized
+        fields = ['id','username', 'email', 'name', 'isAdmin'] # fields to be serialized
 
     def get_id(self, obj): # function to get above mentioned "_id"
         return obj.id # obj is the instance of the User 
@@ -33,7 +33,7 @@ class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True) # token for the user
     class Meta:
         model = User
-        fields = ['id', 'email', 'name', 'isAdmin', 'token']
+        fields = ['id', 'username', 'email', 'name', 'isAdmin', 'token']
     
     def get_token(self, obj): # function that generates token for user
         token = RefreshToken.for_user(obj)

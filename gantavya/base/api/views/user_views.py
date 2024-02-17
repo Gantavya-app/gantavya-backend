@@ -48,6 +48,7 @@ def registerUser(request):
             first_name = data['first_name'],
             last_name = data['last_name'],
             email = data['email'],
+            username = data['username'],
             password = make_password(data['password'])
         )
         serializer = UserSerializerWithToken(user, many=False)
@@ -100,6 +101,7 @@ def updateUser(request, pk):
     data = request.data
     user.first_name = data['name']
     user.email = data['email']
+    user.username = data['username']
     user.is_staff = data['isAdmin']
     
     user.save()
