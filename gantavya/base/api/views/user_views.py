@@ -99,7 +99,6 @@ def updateUser(request, pk):
     # getting data from request and updating
     data = request.data
     user.first_name = data['name']
-    user.username = data['email']
     user.email = data['email']
     user.is_staff = data['isAdmin']
     
@@ -119,7 +118,6 @@ def updateUserProfile(request):
     data = request.data
     # updating user details
     user.first_name = data['name']
-    user.username = data['email']
     user.email = data['email']
 
     if data['password'] != '':
