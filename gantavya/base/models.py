@@ -22,8 +22,7 @@ class Landmark(models.Model):
 class Photos(models.Model):
     place = models.ForeignKey(Landmark, on_delete=models.CASCADE, related_name='photos')
     photo = models.ImageField(upload_to='images/')
-    upload_data = models.DateTimeField(auto_now_add=True)
-
+    upload_date = models.DateTimeField(auto_now_add=True)
     
 
 

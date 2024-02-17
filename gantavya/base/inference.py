@@ -2,7 +2,7 @@ from ultralytics import YOLO
 from PIL import Image
 # from torchvision import transforms
 
-model = YOLO('/home/boogeyman/Desktop/gantavya-backend/gantavya/yolo.pt')
+model = YOLO('yolo.pt')
 
 def predict(image_path, model=model):
     # Load and preprocess the image
@@ -18,6 +18,8 @@ def predict(image_path, model=model):
         prediction = results[0]
         confidence_score = prediction.boxes.conf
         predicted_class =prediction.boxes.cls
+
+        print(f"\n\n\n\n\n  Class: {predicted_class.item()} Score: {confidence_score.item()}\n\n\n\n\n\n")
         return predicted_class.item(), confidence_score.item()
     else:
         return None, None

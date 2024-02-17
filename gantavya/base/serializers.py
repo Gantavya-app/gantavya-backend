@@ -1,6 +1,6 @@
 # Serilaize data so that it helps to send json formatted data in api endpoint
 
-from django.db import models
+from base.models import Landmark, Photos
 from rest_framework import serializers
 from django.contrib.auth.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
@@ -43,3 +43,14 @@ class UserSerializerWithToken(UserSerializer):
 
 
 
+class PhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Photos
+        exclude = ['upload_date']
+
+
+
+class LandmarkSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Landmark
+        exclude = ['created', 'updated']
