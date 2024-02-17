@@ -9,14 +9,13 @@ from rest_framework_simplejwt.tokens import RefreshToken
 # serializes all objects of user model
 class UserSerializer(serializers.ModelSerializer):
     name = serializers.SerializerMethodField(read_only=True) # name of the user
-    _id = serializers.SerializerMethodField(read_only=True) # unique id of the user
     isAdmin = serializers.SerializerMethodField(read_only=True) # admin status of the user
 
     class Meta:
         model = User
-        fields = ['id', '_id', 'username', 'email', 'name', 'isAdmin'] # fields to be serialized
+        fields = ['id', 'username', 'email', 'name', 'isAdmin'] # fields to be serialized
 
-    def get__id(self, obj): # function to get above mentioned "_id"
+    def get_id(self, obj): # function to get above mentioned "_id"
         return obj.id # obj is the instance of the User 
 
     def get_isAdmin(self, obj): # function to get above mentioned "admin status"
@@ -34,7 +33,7 @@ class UserSerializerWithToken(UserSerializer):
     token = serializers.SerializerMethodField(read_only=True) # token for the user
     class Meta:
         model = User
-        fields = ['id', '_id', 'username', 'email', 'name', 'isAdmin', 'token']
+        fields = ['id', 'username', 'email', 'name', 'isAdmin', 'token']
     
     def get_token(self, obj): # function that generates token for user
         token = RefreshToken.for_user(obj)

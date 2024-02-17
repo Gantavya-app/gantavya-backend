@@ -1,8 +1,22 @@
 from django.db import models
+from django.contrib.auth.models import AbstractUser
 
-# Create your models here.
+
+
+
+class User(AbstractUser):
+    name = models.CharField(max_length=200, null=True)
+    email = models.EmailField(unique=True, null=True)
+    username = models.CharField(max_length=15, unique=True, null=False)
+
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+
+
+
+
 class Landmark(models.Model):
-    name = models.CharField(max_length=300,blank=False, null=False) # Pumdikot
+    name = models.CharField(max_length=300,blank=False, null=False) # Pumdikot Shiva Statue
     address = models.CharField(max_length=300,blank=False, null=False) # Pumdikot
     type = models.CharField(max_length=300,blank=False, null=False) # Temple
     description = models.TextField(null=True, blank=True)
@@ -13,7 +27,7 @@ class Landmark(models.Model):
         return self.name
     
     def get_place(self):
-        return self.name+self.address
+        return self.name+ "," +self.address
     
     def get_info(self):
         return self.description

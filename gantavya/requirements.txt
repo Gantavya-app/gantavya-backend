@@ -1,7 +1,0 @@
-django==4.1.5
-django-cors-headers
-djangorestframework
-djangorestframework-simplejwt
-rest_framework_simplejwt
-djangorestframework-simplejwt
-ultralytics
