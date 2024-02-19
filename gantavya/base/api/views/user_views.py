@@ -11,6 +11,8 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework_simplejwt.views import TokenObtainPairView
 
 from django.contrib.auth.hashers import make_password
+from django.core.exceptions import ValidationError
+import re
 from rest_framework import status
 # Create your views here
 
@@ -44,18 +46,38 @@ class MyTokenObtainPairView(TokenObtainPairView): # to login the user
 def registerUser(request):
     data = request.data
     try:
+        # Validate first name and last name are not empty
+        if not data.get('first_name') or not data.get('last_name'):
+            raise ValidationError("First name and last name cannot be empty.")
+
+        # Validate email format
+        if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', data.get('email')):
+            raise ValidationError("Invalid email format.")
+
+        # Validate username format (alphanumeric characters and underscores only)
+        if not re.match(r'^[a-zA-Z0-9_]+$', data.get('username')):
+            raise ValidationError("Username must contain only letters, numbers, or underscores.")
+
+        # Validate password length and complexity
+        password = data.get('password')
+        if len(password) < 8 or not any(char.isupper() for char in password) or not any(char.isdigit() for char in password) or not any(char in '!@#$%^&*()-_=+[]{}|;:,.<>?`~' for char in password):
+            raise ValidationError("Password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character.")
+
         user = User.objects.create(
-            first_name = data['first_name'],
-            last_name = data['last_name'],
-            email = data['email'],
-            username = data['username'],
-            password = make_password(data['password'])
+            first_name=data['first_name'],
+            last_name=data['last_name'],
+            email=data['email'],
+            username=data['username'],
+            password=make_password(data['password'])
         )
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
-    except:
-        message = {'detail':"The user with given credentials already exists"}
+    except ValidationError as e:
+        message = {'detail': str(e)}
         return Response(message, status=status.HTTP_400_BAD_REQUEST)
+    except Exception as e:
+        message = {'detail': "An error occurred while processing your request."}
+        return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
     
 
 
