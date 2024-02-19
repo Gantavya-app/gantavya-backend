@@ -2,7 +2,7 @@
 
 from base.models import Landmark, Photos
 from rest_framework import serializers
-from django.contrib.auth.models import User
+from base.models import User
 from rest_framework_simplejwt.tokens import RefreshToken
 
 
@@ -22,7 +22,7 @@ class UserSerializer(serializers.ModelSerializer):
         return obj.is_staff
 
     def get_name(self, obj): # function to get above mentioned "name"
-        name = obj.first_name
+        name = obj.name
         if name == '':
             name = obj.email
         return name

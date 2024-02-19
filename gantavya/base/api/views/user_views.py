@@ -4,7 +4,7 @@ from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from rest_framework.response import Response
 
-from django.contrib.auth.models import User
+from base.models import User
 from base.serializers import UserSerializer,  UserSerializerWithToken
 
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
@@ -44,11 +44,12 @@ class MyTokenObtainPairView(TokenObtainPairView): # to login the user
 ## Register user
 @api_view(['POST'])
 def registerUser(request):
+
     data = request.data
     try:
-        # Validate first name and last name are not empty
-        if not data.get('first_name') or not data.get('last_name'):
-            raise ValidationError("First name and last name cannot be empty.")
+        # Validate name is not empty
+        if not data.get('name'):
+            raise ValidationError("Name name cannot be empty.")
 
         # Validate email format
         if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', data.get('email')):
@@ -64,8 +65,7 @@ def registerUser(request):
             raise ValidationError("Password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character.")
 
         user = User.objects.create(
-            first_name=data['first_name'],
-            last_name=data['last_name'],
+            name=data['name'],
             email=data['email'],
             username=data['username'],
             password=make_password(data['password'])
@@ -73,11 +73,10 @@ def registerUser(request):
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
     except ValidationError as e:
-        message = {'detail': str(e)}
-        return Response(message, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:
-        message = {'detail': "An error occurred while processing your request."}
-        return Response(message, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
     
 
 
@@ -121,7 +120,7 @@ def updateUser(request, pk):
     user = User.objects.get(id=pk)
     # getting data from request and updating
     data = request.data
-    user.first_name = data['name']
+    user.name = data['name']
     user.email = data['email']
     user.username = data['username']
     user.is_staff = data['isAdmin']
@@ -141,7 +140,7 @@ def updateUserProfile(request):
     serializer = UserSerializerWithToken(user, many=False)
     data = request.data
     # updating user details
-    user.first_name = data['name']
+    user.name = data['name']
     user.email = data['email']
 
     if data['password'] != '':
