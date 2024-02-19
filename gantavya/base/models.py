@@ -56,6 +56,13 @@ class Landmark(models.Model):
     address = models.CharField(max_length=300,blank=False, null=False) # Pumdikot
     type = models.CharField(max_length=300,blank=False, null=False) # Temple
     description = models.TextField(null=True, blank=True)
+    facts = models.TextField(null=True, blank=True)
+    longitude = models.CharField(max_length=50, null=True, blank=True)
+    latitude = models.CharField(max_length=50, null=True, blank=True)
+
+    saved_by = models.ManyToManyField(User, related_name='saved_landmarks', blank=True) # landmark saved by users
+    pred_history = models.ManyToManyField(User, related_name='predicted_landmarks', blank=True) # landmark predicted by users
+
     updated = models.DateTimeField(auto_now=True)
     created = models.DateTimeField(auto_now_add=True)
 
@@ -63,10 +70,17 @@ class Landmark(models.Model):
         return self.name
     
     def get_place(self):
-        return self.name+ "," +self.address
+        return f"{self.name}, {self.address}"
     
     def get_info(self):
         return self.description
+    
+    def get_facts(self):
+        return self.facts
+    
+
+
+
     
 
 class Photos(models.Model):
