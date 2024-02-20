@@ -81,10 +81,10 @@ def registerUser(request):
     # Changing the format to:     {detail:"Invalid email format"}  
     except ValidationError as e:
         error_message = str(e)
-        return Response({"detail": error_message.strip("[]")}, status=status.HTTP_400_BAD_REQUEST)
+        return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
 
     except Exception as e:
-        return Response({"detail": str(e).strip("[]")}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"detail": str(e).strip("[]").strip("'")}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     
 
