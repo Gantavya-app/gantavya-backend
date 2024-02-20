@@ -76,11 +76,15 @@ def registerUser(request):
         )
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
-    
+
+    # error message is of form:   {detail:"['Invalid email format']"}
+    # Changing the format to:     {detail:"Invalid email format"}  
     except ValidationError as e:
-        return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
+        error_message = str(e)
+        return Response({"detail": error_message.strip("[]")}, status=status.HTTP_400_BAD_REQUEST)
+
     except Exception as e:
-        return Response({"detail": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        return Response({"detail": str(e).strip("[]")}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
     
 
