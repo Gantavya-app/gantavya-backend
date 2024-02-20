@@ -14,9 +14,10 @@ from base.inference import predict
 
 
 
-model_idx = ['Pokhara International Airport', 'Bindabasini Temple', 'Bouddha Stupa', "Pema T'SAL Monastery", 'Mountain Museum', 'Gurkha Memorial Museum', 'Pulchowk ICTC Building', 'Pumdikot Shiva Statue', 'Ramghat Monastery', 'WRC RIC Building', 'Peace Stupa', 'Thapathali Building' ]
+# model_idx = ['Pokhara International Airport', 'Bindabasini Temple', 'Bouddha Stupa', "Pema T'SAL Monastery", 'Mountain Museum', 'Gurkha Memorial Museum', 'Pulchowk ICTC Building', 'Pumdikot Shiva Statue', 'Ramghat Monastery', 'WRC RIC Building', 'Peace Stupa', 'Thapathali Building' ]
 
-landmark_idx = {}
+landmark_idx = {0:'Pokhara International Airport', 1:"Peace Stupa", 2:"Gurkha Memorial Museum", 3:"Pumdikot Shiva Statue", 4:"IOE, Pulchowk Campus (ICTC Building)", 5:"Ramghat Gumba", 6:"Pema TS'AL Monastery / Monastic Institute", 7:"Bindhyabasini Temple", 8:"IOE, Pashchimanchal Campus (RIC Building)", 9:"	IOE, Thapathali Campus", }
+
 
 mapping = {}
 
