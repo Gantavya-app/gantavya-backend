@@ -50,14 +50,18 @@ def registerUser(request):
         # Validate name is not empty
         if not data.get('name'):
             raise ValidationError("Name name cannot be empty.")
+        
+        # Validate name contains only alphabets and spaces
+        if not re.match(r'^[a-zA-Z\s]+$', data['name']):
+            raise ValidationError("Name can only contain alphabetical words and space between them")
 
         # Validate email format
         if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', data.get('email')):
             raise ValidationError("Invalid email format.")
 
-        # Validate username format (alphanumeric characters and underscores only)
-        if not re.match(r'^[a-zA-Z0-9_]+$', data.get('username')):
-            raise ValidationError("Username must contain only letters, numbers, or underscores.")
+        # # Validate username format (alphanumeric characters and underscores only)
+        # if not re.match(r'^[a-zA-Z0-9_]+$', data.get('username')):
+        #     raise ValidationError("Username must contain only letters, numbers, or underscores.")
 
         # Validate password length and complexity
         password = data.get('password')
@@ -67,11 +71,12 @@ def registerUser(request):
         user = User.objects.create(
             name=data['name'],
             email=data['email'],
-            username=data['username'],
+            username=data['email'],
             password=make_password(data['password'])
         )
         serializer = UserSerializerWithToken(user, many=False)
         return Response(serializer.data)
+    
     except ValidationError as e:
         return Response({"detail": str(e)}, status=status.HTTP_400_BAD_REQUEST)
     except Exception as e:

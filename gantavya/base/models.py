@@ -42,7 +42,12 @@ from django.utils.translation import gettext_lazy as _
 class User(AbstractUser):
     name = models.CharField(max_length=200, null=True)
     email = models.EmailField(unique=True, null=True)
-    username = models.CharField(max_length=15, unique=True, null=False)
+    username = models.CharField(max_length=15, unique=False, null=False, blank=True, default='User')
+
+    # def save(self, *args, **kwargs):
+    #     if not self.username and self.name:
+    #         self.username = self.name.lower().split()[0] + str(self.id)
+    #     super().save(*args, **kwargs)
 
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = ['username']
