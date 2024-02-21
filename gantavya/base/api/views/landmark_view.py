@@ -43,7 +43,7 @@ mapping = {}
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
-def upload_photo_api(request, landmark_id):
+def upload_photo(request, landmark_id):
     landmark = get_object_or_404(Landmark, pk=landmark_id)
     serializer = PhotoSerializer(data=request.data)
     if serializer.is_valid():
@@ -76,7 +76,7 @@ def upload_photo_api(request, landmark_id):
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAdminUser])
-def landmark_detail_api(request, landmark_id):
+def landmark_detail(request, landmark_id):
     landmark = get_object_or_404(Landmark, pk=landmark_id)
     if request.method == 'POST':
         image_file = request.FILES.get('image')
@@ -93,7 +93,7 @@ def landmark_detail_api(request, landmark_id):
 
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
-def delete_photo_api(request, photo_id):
+def delete_photo(request, photo_id):
     photo = get_object_or_404(Photos, pk=photo_id)
     landmark_id = photo.place.id
 
@@ -110,7 +110,7 @@ def delete_photo_api(request, photo_id):
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
-def create_landmark_api(request):
+def create_landmark(request):
     if request.method == 'POST':
         name = request.data.get('name')  # Assuming 'name' is the only field required
         if name:
@@ -125,7 +125,7 @@ def create_landmark_api(request):
 # List all landmarks for homepage
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
-def landmark_list_api(request):
+def landmark_list(request):
     landmarks = Landmark.objects.all()
     serialized_landmarks = LandmarkSerializer(landmarks, many=True).data
     return Response(serialized_landmarks)
@@ -134,7 +134,7 @@ def landmark_list_api(request):
 
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
-def prediction_api(request):
+def prediction(request):
     try:
         image = request.FILES.get('image')
         predicted_class, confidence_score = predict(image)

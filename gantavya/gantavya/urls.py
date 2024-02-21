@@ -24,6 +24,7 @@ import base.views as views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('api/users/', include('base.api.urls.user_urls')),
+    path('api/landmark/', include('base.api.urls.landmark_urls')),
     path("", views.landmark_list, name="list_landmarks"),
     path("create_landmark", views.create_landmark, name="create_landmark"),
     path('landmark/<int:landmark_id>/', views.landmark_detail, name='landmark_detail'),
