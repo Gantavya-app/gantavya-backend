@@ -12,6 +12,7 @@ urlpatterns = [
 
     path('profile/', views.getUserProfile, name="users-profile"), # api url route to get profile details
     path('profile/update/', views.updateUserProfile, name="user-profile-update"), # api url route to update profile
+    path('profile/delete', views.deleteUserProfile, name='user-profile-delete'), # delete user by user themselves
 
     path('<str:pk>/', views.getUserById, name='user'), # api url route to get details of a user using "id"
     path('delete/<str:pk>/', views.deleteUser, name='user-delete'), # api url route to delete a user

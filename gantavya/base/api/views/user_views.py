@@ -111,6 +111,15 @@ def deleteUser(request, pk): # function to delete user by id
 
 
 
+@api_view(['DELETE']) # api call with http request - DELETE
+@permission_classes([IsAuthenticated])
+def deleteUserProfile(request): # function to delete user when requested by themselves
+    userForDeletion = request.user
+    userForDeletion.delete()
+    return Response('User was deleted')
+
+
+
 # Get user by their unique id (For admin only)
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
