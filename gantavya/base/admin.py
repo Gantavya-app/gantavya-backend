@@ -9,7 +9,7 @@ class UserAdmin(admin.ModelAdmin):
 
 class LandmarkAdmin(admin.ModelAdmin):
     list_display = ('name', 'address', 'type')
-    search_fields = ('name','type',)
+    search_fields = ('name','type','address')
 
 
 admin.site.register(User, UserAdmin)

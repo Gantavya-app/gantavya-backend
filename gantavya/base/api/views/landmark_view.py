@@ -5,6 +5,8 @@ from django.shortcuts import redirect, get_object_or_404
 from base.serializers import LandmarkSerializer, PhotoSerializer
 from rest_framework.decorators import api_view, permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.exceptions import ValidationError
+from rest_framework import status
 
 from base.models import Landmark, Photos
 from PIL import Image
@@ -16,7 +18,7 @@ from base.inference import predict
 
 # model_idx = ['Pokhara International Airport', 'Bindabasini Temple', 'Bouddha Stupa', "Pema T'SAL Monastery", 'Mountain Museum', 'Gurkha Memorial Museum', 'Pulchowk ICTC Building', 'Pumdikot Shiva Statue', 'Ramghat Monastery', 'WRC RIC Building', 'Peace Stupa', 'Thapathali Building' ]
 
-landmark_idx = {0:'Pokhara International Airport', 1:"Peace Stupa", 2:"Gurkha Memorial Museum", 3:"Pumdikot Shiva Statue", 4:"IOE, Pulchowk Campus (ICTC Building)", 5:"Ramghat Gumba", 6:"Pema TS'AL Monastery / Monastic Institute", 7:"Bindhyabasini Temple", 8:"IOE, Pashchimanchal Campus (RIC Building)", 9:"	IOE, Thapathali Campus", 10:"International Mountain Museum", 11:"Bouddhanath Stupa" }
+landmark_idx = {0:'Pokhara International Airport', 1:"Peace Stupa", 2:"Gurkha Memorial Museum", 3:"Pumdikot Shiva Statue", 4:"IOE, Pulchowk Campus (ICTC Building)", 5:"Ramghat Gumba", 6:"Pema TS'AL Monastery / Monastic Institute", 7:"Bindhyabasini Temple", 8:"IOE, Pashchimanchal Campus (RIC Building)", 9:"	IOE, Thapathali Campus", 10:"International Mountain Museum", 11:"Bouddhanath Stupa", 12:"Tribhuvan International Airport",  }
 
 
 mapping = {}
@@ -133,18 +135,54 @@ def landmark_list_api(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def prediction_api(request):
-    image = request.FILES.get('image')
-    predicted_class, confidence_score = predict(image)
+    try:
+        image = request.FILES.get('image')
+        predicted_class, confidence_score = predict(image)
 
-    id_landmark = mapping[int(predicted_class)]
-    landmark = get_object_or_404(Landmark, pk=id_landmark)
-    photos = landmark.photos.all()[:2]
+        id_landmark = mapping.get(int(predicted_class))
+        if id_landmark is None:
+            raise ValidationError("Invalid predicted class")
+        
+        
+        landmark = get_object_or_404(Landmark, pk=id_landmark)
+        photos = landmark.photos.all()[:2]
 
-    data = {
-        'predicted_class': predicted_class,
-        'confidence_score': confidence_score,
-        'landmark': LandmarkSerializer(landmark).data,
-        'photos': [photo.image.url for photo in photos]
-    }
+        if landmark:
+            landmark.pred_history.add(request.user)
+   
+        data = {
+            'predicted_class': predicted_class,
+            'confidence_score': confidence_score,
+            'landmark': LandmarkSerializer(landmark).data,
+            'photos': [photo.image.url for photo in photos]
+        }
 
-    return Response(data)
+        return Response(data)
+
+    except Exception as e:
+        return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
+    
+    except ValidationError as e:
+        error_message = str(e)
+        return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
+
+
+
+
+
+def save_landmark(request):
+    if request.method == 'POST' and request.is_ajax():
+        landmark_id = request.POST.get('landmark_id')
+        is_checked = request.POST.get('is_checked')
+
+        landmark = Landmark.objects.get(id=landmark_id)
+        user = request.user
+
+        if is_checked == 'true':
+            landmark.saved_by.add(user)
+        else:
+            landmark.saved_by.remove(user)
+
+        return Response({'success': True})
+    else:
+        return Response({'success': False})
