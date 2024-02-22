@@ -43,8 +43,8 @@ mapping = {}
 
 @api_view(['POST'])
 @permission_classes([IsAdminUser])
-def upload_photo(request, landmark_id):
-    landmark = get_object_or_404(Landmark, pk=landmark_id)
+def upload_photo(request, pk):
+    landmark = get_object_or_404(Landmark, id=pk)
     serializer = PhotoSerializer(data=request.data)
     if serializer.is_valid():
         serializer.save(place=landmark)
@@ -56,8 +56,8 @@ def upload_photo(request, landmark_id):
 
 # # get detail of landmark with key
 # @api_view(['GET','POST'])
-# def landmark_detail(request, landmark_id):
-#     landmark = get_object_or_404(Landmark, pk=landmark_id)
+# def landmark_detail(request, pk):
+#     landmark = get_object_or_404(Landmark, id=pk)
 #     photos = landmark.photos.all()  # Access all photos associated with the landmark
 
 #     if request.method == 'POST':
@@ -76,8 +76,8 @@ def upload_photo(request, landmark_id):
 
 @api_view(['GET', 'POST'])
 @permission_classes([IsAdminUser])
-def landmark_detail(request, landmark_id):
-    landmark = get_object_or_404(Landmark, pk=landmark_id)
+def landmark_detail(request, pk):
+    landmark = get_object_or_404(Landmark, id=pk)
     if request.method == 'POST':
         image_file = request.FILES.get('image')
         if image_file:
@@ -93,8 +93,8 @@ def landmark_detail(request, landmark_id):
 
 @api_view(['DELETE'])
 @permission_classes([IsAdminUser])
-def delete_photo(request, photo_id):
-    photo = get_object_or_404(Photos, pk=photo_id)
+def delete_photo(request, pk):
+    photo = get_object_or_404(Photos, id=pk)
     landmark_id = photo.place.id
 
     # Delete the photo file from the filesystem
@@ -144,7 +144,7 @@ def prediction(request):
             raise ValidationError("Invalid predicted class")
         
         
-        landmark = get_object_or_404(Landmark, pk=id_landmark)
+        landmark = get_object_or_404(Landmark, id=id_landmark)
         photos = landmark.photos.all()[:2]
 
         if landmark:
