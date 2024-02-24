@@ -12,16 +12,19 @@ from base.models import Landmark, Photos
 from PIL import Image
 from base.inference import predict
 
+import base64
+from django.core.files.base import ContentFile
 
 
 
 
-# model_idx = ['Pokhara International Airport', 'Bindabasini Temple', 'Bouddha Stupa', "Pema T'SAL Monastery", 'Mountain Museum', 'Gurkha Memorial Museum', 'Pulchowk ICTC Building', 'Pumdikot Shiva Statue', 'Ramghat Monastery', 'WRC RIC Building', 'Peace Stupa', 'Thapathali Building' ]
+
+model_idx = {0:'Pokhara International Airport', 1:'Bindabasini Temple', 2:'Bouddha Stupa', 3:"Pema T'SAL Monastery", 4:'Mountain Museum', 5:'Gurkha Memorial Museum', 6:'Pulchowk ICTC Building', 7:'Pumdikot Shiva Statue', 8:'Ramghat Monastery', 9:'WRC RIC Building', 10:'Peace Stupa', 11:'Thapathali Building' }
 
 landmark_idx = {0:'Pokhara International Airport', 1:"Peace Stupa", 2:"Gurkha Memorial Museum", 3:"Pumdikot Shiva Statue", 4:"IOE, Pulchowk Campus (ICTC Building)", 5:"Ramghat Gumba", 6:"Pema TS'AL Monastery / Monastic Institute", 7:"Bindhyabasini Temple", 8:"IOE, Pashchimanchal Campus (RIC Building)", 9:"	IOE, Thapathali Campus", 10:"International Mountain Museum", 11:"Bouddhanath Stupa", 12:"Tribhuvan International Airport",  }
 
 
-mapping = {}
+mapping = {0:0, 1:7, 2:11, 3:6, 4:10, 5:2, 6:4, 7:3, 8:5, 9:8, 10:1, 11:9}
 
 
 # receive image from frontend and save it in backend media file and return status
@@ -135,16 +138,32 @@ def landmark_list(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def prediction(request):
-    try:
-        image = request.FILES.get('image')
-        predicted_class, confidence_score = predict(image)
+#     try:
+#         image = request.FILES.get('image')
+#         predicted_class, confidence_score = predict(image)
 
-        id_landmark = mapping.get(int(predicted_class))
-        if id_landmark is None:
-            raise ValidationError("Invalid predicted class")
+#         id_landmark = mapping.get(int(predicted_class))
+#         if id_landmark is None:
+#             raise ValidationError("Invalid predicted class")
         
         
-        landmark = get_object_or_404(Landmark, id=id_landmark)
+#         landmark = get_object_or_404(Landmark, id=id_landmark)
+    try:
+        image_data = request.data.get('image')  # Assuming 'image' is the key for base64-encoded image data
+        if not image_data:
+            return Response({'error': 'No image data provided'}, status=status.HTTP_400_BAD_REQUEST)
+        
+        # print(image_data)
+        
+        # Decode base64 data
+        decoded_image_data = base64.b64decode(image_data)
+        
+        # Save decoded image data to a temporary file
+        temp_image = ContentFile(decoded_image_data, name='temp_image.jpg')  # Change 'temp_image.jpg' as needed
+        predicted_class, confidence_score = predict(temp_image)
+        
+        # Now you can use temp_image like any other file uploaded through Django's file input
+        landmark = Landmark.objects.create(photo=temp_image)
         photos = landmark.photos.all()[:2]
 
         if landmark:
@@ -160,6 +179,7 @@ def prediction(request):
         return Response(data)
 
     except Exception as e:
+        error_message = str(e)
         return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
     
     except ValidationError as e:
