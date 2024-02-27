@@ -95,26 +95,35 @@ def landmark_list(request):
 
 def prediction_view(request):
     if request.method == 'POST':
-        image = request.FILES.get('image')  # Assuming you have a form with a file input named 'image'
+        try:
+            image = request.FILES.get('image')  # Assuming you have a form with a file input named 'image'
 
-        # Perform prediction using the inference function
-        predicted_class, confidence_score = predict(image)
-        # print("Function call",predicted_class, confidence_score)
-        message1 = f"CALL class: {predicted_class} score:{confidence_score}"
+            # Perform prediction using the inference function
+            predicted_class, confidence_score = predict(image)
+            # print("Function call",predicted_class, confidence_score)
+            message1 = f"CALL class: {predicted_class} score:{confidence_score}"
 
 
 
-        id_landmark = mapping[int(predicted_class)]
+            id_landmark = mapping[int(predicted_class)]
+            
+            landmark = get_object_or_404(Landmark, pk=id_landmark)
+            photos = landmark.photos.all()[:2]
+
+            message2= f" id {id_landmark}"
+
+            message3 = f"OUT class: {predicted_class} score:{confidence_score} landmark {landmark} photos{photos}"
+
+            context = {'predicted_class':predicted_class, 'confidence_score': confidence_score, 'landmark':landmark, 'photos':photos, "message1":message1,"message2":message2, "message3":message3}
+            # Pass the prediction results to the template
+            
+            return render(request, 'base/predict.html',  context)
         
-        landmark = get_object_or_404(Landmark, pk=id_landmark)
-        photos = landmark.photos.all()[:2]
-
-        message2= f" id {id_landmark}"
-
-        message3 = f"OUT class: {predicted_class} score:{confidence_score} landmark {landmark} photos{photos}"
-
-        context = {'predicted_class':predicted_class, 'confidence_score': confidence_score, 'landmark':landmark, 'photos':photos, "message1":message1,"message2":message2, "message3":message3}
-        # Pass the prediction results to the template
-        
-        return render(request, 'base/predict.html',  context)
+        except Exception as e:
+            error_message = str(e)
+            if error_message == "a Tensor with 0 elements cannot be converted to Scalar":
+                error_message = "Couldn't Predict For Given Image."
+                context = {'message1':"Exception class no prediction"}
+            return render(request, 'base/predict.html',  context)
+            
     return render(request, 'base/predict.html')

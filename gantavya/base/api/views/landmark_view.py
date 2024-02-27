@@ -180,6 +180,8 @@ def prediction(request):
 
     except Exception as e:
         error_message = str(e)
+        if error_message == "a Tensor with 0 elements cannot be converted to Scalar":
+            error_message = "Couldn't Predict For Given Image."
         return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
     
     except ValidationError as e:
