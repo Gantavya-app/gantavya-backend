@@ -12,14 +12,15 @@ def predict(image_path, model=model):
 
     # Perform inference using the YOLO model
     results = model(image)
-    print("\n\nResults:", results)
-    print("\n\n")
+    # print("\n\nResults:", results[0])
+    # print("BOXES:", prediction.boxes)
+    # print("\n\n")
 
     # Extract the predicted class and confidence score (modify based on your model's output structure)
     if results:
         prediction = results[0]
         confidence_score = prediction.boxes.conf
-        predicted_class =prediction.boxes.cls
+        predicted_class = prediction.boxes.cls
 
         print(f"\n\n\n\n\n  Class: {predicted_class.item()} Score: {confidence_score.item()}\n\n\n\n\n\n")
         return predicted_class.item(), confidence_score.item()
