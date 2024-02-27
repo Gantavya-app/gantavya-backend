@@ -12,6 +12,8 @@ def predict(image_path, model=model):
 
     # Perform inference using the YOLO model
     results = model(image)
+    print("\n\nResults:", results)
+    print("\n\n")
 
     # Extract the predicted class and confidence score (modify based on your model's output structure)
     if results:
