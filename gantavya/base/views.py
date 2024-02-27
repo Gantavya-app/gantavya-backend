@@ -121,9 +121,11 @@ def prediction_view(request):
         
         except Exception as e:
             error_message = str(e)
+            context = {}
             if error_message == "a Tensor with 0 elements cannot be converted to Scalar":
                 error_message = "Couldn't Predict For Given Image."
                 context = {'message1':"Exception class no prediction"}
+            
             return render(request, 'base/predict.html',  context)
             
     return render(request, 'base/predict.html')
