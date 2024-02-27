@@ -89,7 +89,7 @@ def landmark_detail(request, pk):
             return Response(serializer.data, status=201)
         return Response({'error': 'No image file provided.'}, status=400)
     else:
-        photos = landmark.photos.all()
+        photos = landmark.photos.all()[:3]
         landmark_serializer = LandmarkSerializer(landmark)
         return Response({'landmark': landmark_serializer.data, 'photos': PhotoSerializer(photos, many=True).data})
 
@@ -163,8 +163,8 @@ def prediction(request):
         predicted_class, confidence_score = predict(temp_image)
         
         # Now you can use temp_image like any other file uploaded through Django's file input
-        landmark = Landmark.objects.create(photo=temp_image)
-        photos = landmark.photos.all()[:2]
+        landmark = get_object_or_404(Landmark, mapping[int(predicted_class)])
+        photos = landmark.photos.all()[:3]
 
         if landmark:
             landmark.pred_history.add(request.user)
@@ -173,7 +173,7 @@ def prediction(request):
             'predicted_class': predicted_class,
             'confidence_score': confidence_score,
             'landmark': LandmarkSerializer(landmark).data,
-            'photos': [photo.image.url for photo in photos]
+            'photos': PhotoSerializer(photos, many=True).data,
         }
 
         return Response(data)
@@ -191,20 +191,28 @@ def prediction(request):
 
 
 
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def save_landmark(request, pk):
+    if request.method == 'POST':
+        try:
+            if request.data.get('value'):
+                value = request.data.get('value')
+            else: 
+                raise ValidationError("No value was sent")
+            
+            landmark = get_object_or_404(Landmark, id=pk)
+            user = request.user()
 
-def save_landmark(request):
-    if request.method == 'POST' and request.is_ajax():
-        landmark_id = request.POST.get('landmark_id')
-        is_checked = request.POST.get('is_checked')
+            if value=='False' or value=='false' or value==False:
+                landmark.saved_by.remove(user)
+            else:
+                landmark.saved_by.add(user)
 
-        landmark = Landmark.objects.get(id=landmark_id)
-        user = request.user
-
-        if is_checked == 'true':
-            landmark.saved_by.add(user)
-        else:
-            landmark.saved_by.remove(user)
-
-        return Response({'success': True})
-    else:
-        return Response({'success': False})
+        except Exception as e:
+            error_message = str(e)
+            return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
+    
+        except ValidationError as e:
+            error_message = str(e)
+            return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)

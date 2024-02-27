@@ -9,7 +9,7 @@ urlpatterns = [
     
     path('landmark/<str:pk>', views.landmark_detail, name='landmark'),
     path('create/', views.create_landmark, name='create_landmark'),
-    path('saved_by/', views.save_landmark, name="saved_by"),
+    path('saved_by/<str:pk>', views.save_landmark, name="saved_by"),
 
     path('prediction/', views.prediction, name='prediction'),
 
