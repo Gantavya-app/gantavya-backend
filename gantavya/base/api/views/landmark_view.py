@@ -194,12 +194,14 @@ def save_landmark(request, pk):
                 raise ValidationError("No value was sent")
             
             landmark = get_object_or_404(Landmark, id=pk)
-            user = request.user()
+            user = request.user
 
             if value=='False' or value=='false' or value==False:
                 landmark.saved_by.remove(user)
+                return Response({'detail':"Unsaved Landmark"})
             else:
                 landmark.saved_by.add(user)
+                return Response({'detail':"Saved Landmark"})
 
         except ValidationError as e:
             error_message = str(e)
@@ -208,3 +210,57 @@ def save_landmark(request, pk):
         except Exception as e:
             error_message = str(e)
             return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)       
+        
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def saved_landmarks(request):
+    try:
+        user = request.user
+        saved_landmarks  = user.saved_landmarks.all()
+
+        landmarks_data = []
+        for landmark in saved_landmarks:
+            landmarks_data.append({
+                'name': landmark.name,
+                'address': landmark.address,
+                'type': landmark.type,
+                'description': landmark.description,
+                'facts': landmark.facts,
+                'longitude': landmark.longitude,
+                'latitude': landmark.latitude
+            })
+
+        return Response(landmarks_data)
+    
+    except Exception as e:
+            error_message = str(e)
+            return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST) 
+    
+
+
+@api_view(["GET"])
+@permission_classes([IsAuthenticated])
+def user_prediction_history(request):
+    try:
+        user = request.user
+        saved_landmarks  = user.predicted_landmarks.all()
+
+        landmarks_data = []
+        for landmark in saved_landmarks:
+            landmarks_data.append({
+                'name': landmark.name,
+                'address': landmark.address,
+                'type': landmark.type,
+                'description': landmark.description,
+                'facts': landmark.facts,
+                'longitude': landmark.longitude,
+                'latitude': landmark.latitude
+            })
+
+        return Response(landmarks_data)
+    
+    except Exception as e:
+            error_message = str(e)
+            return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST) 
