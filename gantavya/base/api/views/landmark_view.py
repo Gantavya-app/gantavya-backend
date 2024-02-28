@@ -138,20 +138,10 @@ def landmark_list(request):
 @api_view(['POST'])
 @permission_classes([IsAuthenticated])
 def prediction(request):
-#     try:
-#         image = request.FILES.get('image')
-#         predicted_class, confidence_score = predict(image)
-
-#         id_landmark = mapping.get(int(predicted_class))
-#         if id_landmark is None:
-#             raise ValidationError("Invalid predicted class")
-        
-        
-#         landmark = get_object_or_404(Landmark, id=id_landmark)
     try:
         image_data = request.data.get('image')  # Assuming 'image' is the key for base64-encoded image data
         if not image_data:
-            return Response({'error': 'No image data provided'}, status=status.HTTP_400_BAD_REQUEST)
+            return ValidationError("No Image Data Provided")
         
         # print(image_data)
         
@@ -177,6 +167,10 @@ def prediction(request):
         }
 
         return Response(data)
+    
+    except ValidationError as e:
+        error_message = str(e)
+        return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
 
     except Exception as e:
         error_message = str(e)
@@ -184,9 +178,7 @@ def prediction(request):
             error_message = "Couldn't Predict For Given Image."
         return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
     
-    except ValidationError as e:
-        error_message = str(e)
-        return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
+    
 
 
 
@@ -209,10 +201,10 @@ def save_landmark(request, pk):
             else:
                 landmark.saved_by.add(user)
 
-        except Exception as e:
-            error_message = str(e)
-            return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
-    
         except ValidationError as e:
             error_message = str(e)
             return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
+
+        except Exception as e:
+            error_message = str(e)
+            return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)       
