@@ -14,6 +14,6 @@ urlpatterns = [
     path('prediction/', views.prediction, name='prediction'),
 
     path('saved/', views.saved_landmarks, name='saved_landmarks'),
-    path('history/', views.pred_user_history, name='user_prediction_history'),
+    path('history/', views.user_prediction_history, name='user_prediction_history'),
 
 ]
