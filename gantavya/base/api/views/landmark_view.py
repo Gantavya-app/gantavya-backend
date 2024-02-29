@@ -151,6 +151,8 @@ def prediction(request):
         # Save decoded image data to a temporary file
         temp_image = ContentFile(decoded_image_data, name='temp_image.jpg')  # Change 'temp_image.jpg' as needed
         predicted_class, confidence_score = predict(temp_image)
+
+        print("VIEWS: ", predicted_class, confidence_score)
         
         # Now you can use temp_image like any other file uploaded through Django's file input
         landmark = get_object_or_404(Landmark, mapping[int(predicted_class)])

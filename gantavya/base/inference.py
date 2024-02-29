@@ -9,8 +9,6 @@ def predict(image_path, model=model):
     # Load and preprocess the image
     # try:
     image = Image.open(image_path)
-    if not Image:
-        return ValidationError("Provide Valid Image Path")
     # transform = transforms.Compose([transforms.ToTensor()])
     # input_image = transform(image).unsqueeze(0)
 
@@ -27,7 +25,7 @@ def predict(image_path, model=model):
         predicted_class = prediction.boxes.cls
 
         print(f"\n\n\n\n\n  Class: {predicted_class.item()} Score: {confidence_score.item()}\n\n\n\n\n\n")
-        return predicted_class.item(), confidence_score.item()
+        return (predicted_class.item(), confidence_score.item())
     else:
         return None, None
         
