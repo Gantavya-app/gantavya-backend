@@ -206,12 +206,10 @@ def saved_landmarks(request):
         user = request.user
         saved_landmarks  = user.saved_landmarks.all()
 
-        if len(saved_landmarks) == 0:
-            return Response({'detail':'No saved landmarks!'})
-        else:
-            # Serialize landmark data
-            serializer = LandmarkSerializer(saved_landmarks, many=True, context={'request': request}).data
-            return Response(serializer.data)
+
+        # Serialize landmark data
+        serializer = LandmarkSerializer(saved_landmarks, many=True, context={'request': request}).data
+        return Response(serializer.data)
 
     except Exception as e:
             error_message = str(e)
@@ -226,12 +224,10 @@ def user_prediction_history(request):
     try:
         user = request.user
         predicted_landmarks = user.predicted_landmarks.all()
-        if len(predicted_landmarks) == 0:
-            return Response({'detail':'No previous history!'})
-        else:
+
         # Serialize landmark data
-            serializer = LandmarkSerializer(predicted_landmarks, many=True, context={'request': request}).data
-            return Response(serializer.data)
+        serializer = LandmarkSerializer(predicted_landmarks, many=True, context={'request': request}).data
+        return Response(serializer.data)
     
     except Exception as e:
             error_message = str(e)
