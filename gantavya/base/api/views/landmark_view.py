@@ -146,7 +146,7 @@ def prediction(request):
             'predicted_class': predicted_class,
             'confidence_score': confidence_score,
             'landmark': LandmarkSerializer(landmark, many=False, context={'request': request}).data, 
-            # 'photos': PhotoSerializer(photos, many=True, context={'request': request}).data,        
+            'photos': PhotoSerializer(photos, many=True, context={'request': request}).data,        
             }
 
         return Response(data)
