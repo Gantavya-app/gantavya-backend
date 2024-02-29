@@ -1,9 +1,13 @@
 from ultralytics import YOLO
 from PIL import Image
 from rest_framework.exceptions import ValidationError
-# from torchvision import transforms
+from pathlib import Path
 
-model = YOLO('yolo.pt')
+# from torchvision import transforms
+MODEL_PATH = Path(__file__).resolve().parent.parent
+
+model = YOLO(MODEL_PATH / "yolo.pt")
+
 
 def predict(image_path, model=model):
     # Load and preprocess the image
@@ -24,11 +28,13 @@ def predict(image_path, model=model):
         confidence_score = prediction.boxes.conf
         predicted_class = prediction.boxes.cls
 
-        print(f"\n\n\n\n\n  Class: {predicted_class.item()} Score: {confidence_score.item()}\n\n\n\n\n\n")
+        print(
+            f"\n\n\n\n\n  Class: {predicted_class.item()} Score: {confidence_score.item()}\n\n\n\n\n\n"
+        )
         return (predicted_class.item(), confidence_score.item())
     else:
         return None, None
-        
+
     # except ValidationError as e:
     #     error_message = str(e)
     #     return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
