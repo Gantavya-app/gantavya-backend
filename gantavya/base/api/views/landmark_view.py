@@ -209,7 +209,7 @@ def saved_landmarks(request):
 
         # Serialize landmark data
         serializer = LandmarkSerializer(saved_landmarks, many=True, context={'request': request}).data
-        return Response(serializer.data)
+        return Response(serializer)
 
     except Exception as e:
             error_message = str(e)
@@ -227,7 +227,7 @@ def user_prediction_history(request):
 
         # Serialize landmark data
         serializer = LandmarkSerializer(predicted_landmarks, many=True, context={'request': request}).data
-        return Response(serializer.data)
+        return Response(serializer)
     
     except Exception as e:
             error_message = str(e)
