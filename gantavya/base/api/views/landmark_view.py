@@ -71,11 +71,15 @@ def landmark_detail(request, pk):
     
     else:  # Handle GET request
         photos = landmark.photos.all()[:3]
+        is_saved = request.user.saved_landmarks.filter(id=landmark.id).exists()
+
         data = {
         'landmark': LandmarkSerializer(landmark, many=False, context={'request': request}).data, 
         'photos': PhotoSerializer(photos, many=True, context={'request': request}).data,  
+        'is_saved':is_saved
         }
         return Response(data)
+    
 
 
 @api_view(['DELETE'])
@@ -142,14 +146,17 @@ def prediction(request):
         landmark = get_object_or_404(Landmark, id=mapping[int(predicted_class)])
         photos = landmark.photos.all()
 
+        is_saved = request.user.saved_landmarks.filter(id=landmark.id).exists()
+        
         if landmark:
             landmark.pred_history.add(request.user)
-   
+
         data = {
             'predicted_class': predicted_class,
             'confidence_score': confidence_score,
             'landmark': LandmarkSerializer(landmark, many=False, context={'request': request}).data, 
-            'photos': PhotoSerializer(photos, many=True, context={'request': request}).data,        
+            'photos': PhotoSerializer(photos, many=True, context={'request': request}).data,
+            'is_saved':is_saved
             }
 
         return Response(data)
