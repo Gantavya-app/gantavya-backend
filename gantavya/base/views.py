@@ -6,12 +6,13 @@ from rest_framework.decorators import permission_classes
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
-names= {0: 'airport', 1: 'bindabasini', 2: 'hemja', 3: 'museum', 4: 'pumdikot', 5: 'ramghat_gumba', 6: 'ric', 7: 'stupa'}
 
-landmark_id = {0:"PEMA TS'AL Monastery (Hemja Gumba)", 1:"RIC Building, Pashchimanchal Campus", 2:'Pokhara International Airport', 3:"Ramghat Monastery", 4:"Peace Pagoda Stupa", 5:"Pumdikot Shiva Temple", 6:"Gorkha Museum", 7:"Bindabasini Temple" }
+names = {0:'Pokhara International Airport', 1:'Bindabasini Temple', 2:'Bouddha Stupa', 3:"Pema T'SAL Monastery", 4:'Mountain Museum', 5:'Gurkha Memorial Museum', 6:'Pulchowk ICTC Building', 7:'Pumdikot Shiva Statue', 8:'Ramghat Monastery', 9:'WRC RIC Building', 10:'Peace Stupa', 11:'Thapathali Building',12:"Tribhuvan International Airport" }
 
-#map names to landmark_id
-mapping = {0:3, 1:8, 2:1, 3:7, 4:6, 5:4, 6:2, 7:5}
+landmark_id = {0:'Pokhara International Airport', 1:"Peace Stupa", 2:"Gurkha Memorial Museum", 3:"Pumdikot Shiva Statue", 4:"IOE, Pulchowk Campus (ICTC Building)", 5:"Ramghat Gumba", 6:"Pema TS'AL Monastery / Monastic Institute", 7:"Bindhyabasini Temple", 8:"IOE, Pashchimanchal Campus (RIC Building)", 9:"	IOE, Thapathali Campus", 10:"International Mountain Museum", 11:"Bouddhanath Stupa", 12:"Tribhuvan International Airport",  }
+
+
+mapping = {0:0, 1:7, 2:11, 3:6, 4:10, 5:2, 6:4, 7:3, 8:5, 9:8, 10:1, 11:9, 12:12}
 
 
 @permission_classes([IsAdminUser])
