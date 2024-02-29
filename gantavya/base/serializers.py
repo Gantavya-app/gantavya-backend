@@ -43,9 +43,18 @@ class UserSerializerWithToken(UserSerializer):
 
 
 class PhotoSerializer(serializers.ModelSerializer):
+    photo_url = serializers.SerializerMethodField()
     class Meta:
         model = Photos
         exclude = ['upload_date']
+
+    def get_photo_url(self, photo):
+        request = self.context.get('request')
+        photo_url = request.build_absolute_uri(photo.photo.url)
+        photo_url = request.build_absolute_uri(photo.photo.url)
+        # Replace '/images/' with '/static/images/' in the URL
+        photo_url = photo_url.replace('/images/', '/static/images/')
+        return photo_url
 
 
 
@@ -60,4 +69,5 @@ class LandmarkSerializer(serializers.ModelSerializer):
     def get_photos(self, landmark):
         photos = landmark.photos.all()
         photo_urls = [self.context['request'].build_absolute_uri(photo.photo.url) for photo in photos]
+        photo_urls = [photo_url.replace('/images/', '/static/images/') for photo_url in photo_urls]
         return photo_urls
