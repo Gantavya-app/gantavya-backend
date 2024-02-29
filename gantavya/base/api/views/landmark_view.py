@@ -220,19 +220,11 @@ def saved_landmarks(request):
         user = request.user
         saved_landmarks  = user.saved_landmarks.all()
 
-        landmarks_data = []
-        for landmark in saved_landmarks:
-            landmarks_data.append({
-                'name': landmark.name,
-                'address': landmark.address,
-                'type': landmark.type,
-                'description': landmark.description,
-                'facts': landmark.facts,
-                'longitude': landmark.longitude,
-                'latitude': landmark.latitude
-            })
-
-        return Response(landmarks_data)
+        # Serialize landmark data
+        serializer = LandmarkSerializer(saved_landmarks, many=True)
+        
+        return Response(serializer.data)
+    
     
     except Exception as e:
             error_message = str(e)
@@ -245,21 +237,12 @@ def saved_landmarks(request):
 def user_prediction_history(request):
     try:
         user = request.user
-        saved_landmarks  = user.predicted_landmarks.all()
-
-        landmarks_data = []
-        for landmark in saved_landmarks:
-            landmarks_data.append({
-                'name': landmark.name,
-                'address': landmark.address,
-                'type': landmark.type,
-                'description': landmark.description,
-                'facts': landmark.facts,
-                'longitude': landmark.longitude,
-                'latitude': landmark.latitude
-            })
-
-        return Response(landmarks_data)
+        predicted_landmarks = user.predicted_landmarks.all()
+        
+        # Serialize landmark data
+        serializer = LandmarkSerializer(predicted_landmarks, many=True)
+        
+        return Response(serializer.data)
     
     except Exception as e:
             error_message = str(e)
