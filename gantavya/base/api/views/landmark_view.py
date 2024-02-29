@@ -48,7 +48,7 @@ mapping = {0:1, 1:8, 2:12, 3:7, 4:11, 5:3, 6:5, 7:4, 8:6, 9:9, 10:2, 11:10, 12:1
 @permission_classes([IsAdminUser])
 def upload_photo(request, pk):
     landmark = get_object_or_404(Landmark, id=pk)
-    serializer = PhotoSerializer(data=request.data)
+    serializer = PhotoSerializer(data=request.data, many=True, context={'request': request}).data,      
     if serializer.is_valid():
         serializer.save(place=landmark)
         return Response(serializer.data, status=201)
@@ -56,42 +56,23 @@ def upload_photo(request, pk):
 
 
 
-
-# # get detail of landmark with key
-# @api_view(['GET','POST'])
-# def landmark_detail(request, pk):
-#     landmark = get_object_or_404(Landmark, id=pk)
-#     photos = landmark.photos.all()  # Access all photos associated with the landmark
-
-#     if request.method == 'POST':
-#         image_data = request.FILES.get('image')
-
-#         if image_data:
-#             photo = Photos(image=image_data)
-#             photo.place = landmark
-#             photo.save()
-
-#             return JsonResponse({'success': True, 'message': 'Photo uploaded successfully'})
-#         else:
-#             return JsonResponse({'success': False, 'message': 'No image data received'}, status=400)
-
-#     return JsonResponse({'error': 'Method not allowed'}, status=405)
-
 @api_view(['GET', 'POST'])
 @permission_classes([IsAdminUser])
 def landmark_detail(request, pk):
     landmark = get_object_or_404(Landmark, id=pk)
+    
     if request.method == 'POST':
         image_file = request.FILES.get('image')
         if image_file:
             photo = Photos.objects.create(place=landmark, image=image_file)
-            serializer = PhotoSerializer(photo)
+            serializer = PhotoSerializer(photo, context={'request': request})
             return Response(serializer.data, status=201)
         return Response({'error': 'No image file provided.'}, status=400)
-    else:
-        photos = landmark.photos.all()[:3]
-        landmark_serializer = LandmarkSerializer(landmark)
-        return Response({'landmark': landmark_serializer.data, 'photos': PhotoSerializer(photos, many=True).data})
+    
+    else:  # Handle GET request
+        landmark_serializer = LandmarkSerializer(landmark, context={'request': request}).data
+        
+        return Response(landmark_serializer)
 
 
 @api_view(['DELETE'])
@@ -118,7 +99,7 @@ def create_landmark(request):
         name = request.data.get('name')  # Assuming 'name' is the only field required
         if name:
             landmark = Landmark.objects.create(name=name)
-            serializer = LandmarkSerializer(landmark)
+            serializer = LandmarkSerializer(landmark, many=False, context={'request': request}).data
             return Response(serializer.data, status=201)
         return Response({'error': 'Name field is required.'}, status=400)
     
@@ -164,8 +145,8 @@ def prediction(request):
         data = {
             'predicted_class': predicted_class,
             'confidence_score': confidence_score,
-            'landmark': LandmarkSerializer(landmark).data,
-            'photos': PhotoSerializer(photos, many=True, context={'request': request}).data,        
+            'landmark': LandmarkSerializer(landmark, many=False, context={'request': request}).data, 
+            # 'photos': PhotoSerializer(photos, many=True, context={'request': request}).data,        
             }
 
         return Response(data)
@@ -223,7 +204,7 @@ def saved_landmarks(request):
         saved_landmarks  = user.saved_landmarks.all()
 
         # Serialize landmark data
-        serializer = LandmarkSerializer(saved_landmarks, many=True)
+        serializer = LandmarkSerializer(saved_landmarks, many=True, context={'request': request}).data
         
         return Response(serializer.data)
     
@@ -242,7 +223,7 @@ def user_prediction_history(request):
         predicted_landmarks = user.predicted_landmarks.all()
         
         # Serialize landmark data
-        serializer = LandmarkSerializer(predicted_landmarks, many=True)
+        serializer = LandmarkSerializer(predicted_landmarks, many=True, context={'request': request}).data
         
         return Response(serializer.data)
     

@@ -71,3 +71,4 @@ class LandmarkSerializer(serializers.ModelSerializer):
         photo_urls = [self.context['request'].build_absolute_uri(photo.photo.url) for photo in photos]
         photo_urls = [photo_url.replace('/images/', '/static/images/') for photo_url in photo_urls]
         return photo_urls
+    
