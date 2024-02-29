@@ -83,7 +83,7 @@ def landmark_list(request):
     all_landmarks = Landmark.objects.all()
     photos = {}
     for landmark in all_landmarks:
-        photo = landmark.photos.all()[:2]
+        photo = landmark.photos.all()[:3]
         photos[landmark.id] = photo
     # photos = {'1':[image_1, image_2], '2':[image_1, image_2]}
     # print("Photos",photos)
