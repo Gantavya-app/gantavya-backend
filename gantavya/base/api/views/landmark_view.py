@@ -71,11 +71,11 @@ def landmark_detail(request, pk):
     
     else:  # Handle GET request
         photos = landmark.photos.all()[:3]
-        response_serializer = {
+        data = {
         'landmark': LandmarkSerializer(landmark, many=False, context={'request': request}).data, 
         'photos': PhotoSerializer(photos, many=True, context={'request': request}).data,  
         }
-        return Response(response_serializer)
+        return Response(data)
 
 
 @api_view(['DELETE'])
