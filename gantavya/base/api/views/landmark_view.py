@@ -70,9 +70,12 @@ def landmark_detail(request, pk):
         return Response({'error': 'No image file provided.'}, status=400)
     
     else:  # Handle GET request
-        landmark_serializer = LandmarkSerializer(landmark, context={'request': request}).data
-        
-        return Response(landmark_serializer)
+        photos = landmark.photos.all()[:3]
+        response_serializer = {
+        'landmark': LandmarkSerializer(landmark, many=False, context={'request': request}).data, 
+        'photos': PhotoSerializer(photos, many=True, context={'request': request}).data,  
+        }
+        return Response(response_serializer)
 
 
 @api_view(['DELETE'])
