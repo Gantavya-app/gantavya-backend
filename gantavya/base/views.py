@@ -108,7 +108,7 @@ def prediction_view(request):
             id_landmark = mapping[int(predicted_class)]
             
             landmark = get_object_or_404(Landmark, pk=id_landmark)
-            photos = landmark.photos.all()[:2]
+            photos = landmark.photos.all()[:3]
 
             message2= f" id {id_landmark}"
 
