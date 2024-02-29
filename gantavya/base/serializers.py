@@ -50,6 +50,14 @@ class PhotoSerializer(serializers.ModelSerializer):
 
 
 class LandmarkSerializer(serializers.ModelSerializer):
+
+    photos = serializers.SerializerMethodField()
+
     class Meta:
         model = Landmark
-        exclude = ['created', 'updated']
+        fields = ['id', 'name', 'address', 'type', 'description', 'facts', 'longitude', 'latitude', 'photos']
+
+    def get_photos(self, landmark):
+        photos = landmark.photos.all()
+        photo_urls = [self.context['request'].build_absolute_uri(photo.photo.url) for photo in photos]
+        return photo_urls

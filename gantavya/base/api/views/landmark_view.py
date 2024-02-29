@@ -130,7 +130,7 @@ def create_landmark(request):
 @permission_classes([IsAuthenticated])
 def landmark_list(request):
     landmarks = Landmark.objects.all()
-    serialized_landmarks = LandmarkSerializer(landmarks, many=True).data
+    serialized_landmarks = LandmarkSerializer(landmarks, many=True, context={'request': request}).data
     return Response(serialized_landmarks)
 
 
