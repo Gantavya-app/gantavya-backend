@@ -66,23 +66,6 @@ mapping = {
 }
 
 
-# receive image from frontend and save it in backend media file and return status
-# @api_view(['POST'])
-# @permission_classes([IsAdminUser])
-# def upload_photo(request, landmark_id):
-#     landmark = get_object_or_404(Landmark, pk=landmark_id)
-#     if request.method == 'POST':
-#         image_data = request.FILES.get('image')
-#         if image_data:
-#             photo = Photos(image=image_data)
-#             photo.place = landmark
-#             photo.save()
-#             return JsonResponse({'success': True, 'message': 'Photo uploaded successfully'})
-#         else:
-#             return JsonResponse({'success': False, 'message': 'No image data received'}, status=400)
-#     return JsonResponse({'error': 'Method not allowed'}, status=405)
-
-
 @api_view(["POST"])
 @permission_classes([IsAdminUser])
 def upload_photo(request, pk):
