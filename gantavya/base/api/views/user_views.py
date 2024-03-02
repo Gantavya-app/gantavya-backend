@@ -184,10 +184,48 @@ def updateUserProfile(request):
 
 
 
-#  User requesting other users profile 
+#  User requesting their profile 
 @api_view(['GET']) # api call with http request - GET
 @permission_classes([IsAuthenticated]) # function decorator to check whether the requesting user is authenticated or not
 def getUserProfile(request):
     user = request.user
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
+
+
+
+
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
+def changePassword(request):
+
+    try:
+        user = request.user
+        data = request.data
+
+        # Fetch old password and compare
+        old_password = data.get('old_password', None)
+        if not old_password or not user.check_password(old_password):
+            raise ValidationError("Old password is incorrect.")
+
+        # Validate new password
+        new_password = data.get('new_password', None)
+        if not new_password or len(new_password) < 8 or not any(char.isupper() for char in new_password) or not any(char.isdigit() for char in new_password) or not any(char in '!@#$%^&*()-_=+[]{}|;:,.<>?`~' for char in new_password):
+            raise ValidationError("New password must be at least 8 characters long and contain at least one uppercase letter, one digit, and one special character.")
+        
+        # Ensure new password is different from old password
+        if old_password == new_password:
+            raise ValidationError("New password must be different from old password.")
+
+        # Update password
+        user.set_password(new_password)
+        user.save()
+
+        return Response({"message": "Password changed successfully."})
+    
+    except ValidationError as e:
+        error_message = str(e)
+        return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        return Response({"detail": str(e).strip("[]").strip("'")}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
