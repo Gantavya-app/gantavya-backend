@@ -7,12 +7,54 @@ from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 
 
-names = {0:'Pokhara International Airport', 1:'Bindabasini Temple', 2:'Bouddha Stupa', 3:"Pema T'SAL Monastery", 4:'Mountain Museum', 5:'Gurkha Memorial Museum', 6:'Pulchowk ICTC Building', 7:'Pumdikot Shiva Statue', 8:'Ramghat Monastery', 9:'WRC RIC Building', 10:'Peace Stupa', 11:'Thapathali Building',12:"Tribhuvan International Airport" }
+model_idx = {
+    0: "Pokhara International Airport",
+    1: "Bindabasini Temple",
+    2: "Bouddha Stupa",
+    3: "Pema T'SAL Monastery",
+    4: "Mountain Museum",
+    5: "Gurkha Memorial Museum",
+    6: "Pulchowk ICTC Building",
+    7: "Pumdikot Shiva Statue",
+    8: "Ramghat Monastery",
+    9: "WRC RIC Building",
+    10: "Peace Stupa",
+    11: "Thapathali Building",
+    12: "Tribhuvan International Airport",
+}
 
-landmark_id = {0:'Pokhara International Airport', 1:"Peace Stupa", 2:"Gurkha Memorial Museum", 3:"Pumdikot Shiva Statue", 4:"IOE, Pulchowk Campus (ICTC Building)", 5:"Ramghat Gumba", 6:"Pema TS'AL Monastery / Monastic Institute", 7:"Bindhyabasini Temple", 8:"IOE, Pashchimanchal Campus (RIC Building)", 9:"	IOE, Thapathali Campus", 10:"International Mountain Museum", 11:"Bouddhanath Stupa", 12:"Tribhuvan International Airport",  }
+landmark_idx = {
+    1: "Pokhara International Airport",
+    2: "Peace Stupa",
+    3: "Gurkha Memorial Museum",
+    4: "Pumdikot Shiva Statue",
+    5: "IOE, Pulchowk Campus (ICTC Building)",
+    6: "Ramghat Gumba",
+    7: "Pema TS'AL Monastery / Monastic Institute",
+    8: "Bindhyabasini Temple",
+    9: "IOE, Pashchimanchal Campus (RIC Building)",
+    10: "	IOE, Thapathali Campus",
+    11: "International Mountain Museum",
+    12: "Bouddhanath Stupa",
+    13: "Tribhuvan International Airport",
+}
 
 
-mapping = {0:0, 1:7, 2:11, 3:6, 4:10, 5:2, 6:4, 7:3, 8:5, 9:8, 10:1, 11:9, 12:12}
+mapping = {
+    0: 1,
+    1: 8,
+    2: 12,
+    3: 7,
+    4: 11,
+    5: 3,
+    6: 5,
+    7: 4,
+    8: 6,
+    9: 9,
+    10: 2,
+    11: 10,
+    12: 13,
+}
 
 
 @permission_classes([IsAdminUser])
