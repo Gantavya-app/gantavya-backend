@@ -150,23 +150,38 @@ def updateUser(request, pk):
 
 
 
-# Update user (By user themselves)
-@api_view(['PUT']) # api call with http request - PUT
-@permission_classes([IsAuthenticated]) # function decorator to check whether the requesting user is authenticated or not
+@api_view(['PUT'])
+@permission_classes([IsAuthenticated])
 def updateUserProfile(request): 
-    user = request.user
-    serializer = UserSerializerWithToken(user, many=False)
-    data = request.data
-    # updating user details
-    user.name = data['name']
-    user.email = data['email']
 
-    if data['password'] != '':
-        user.password = make_password(data['password'])
-    # saving user object
-    user.save()
+    try:
+        user = request.user
+        serializer = UserSerializerWithToken(user, many=False)
+        data = request.data
+
+        # Validate name is not empty
+        if 'name' in data and data['name']:
+            user.name = data['name']
+
+        # Validate email format and update
+        if 'email' in data:
+            if not re.match(r'^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$', data['email']):
+                raise ValidationError("Invalid email format.")
+            user.email = data['email']
+
+        # Save user object
+        user.save()
+        
+        return Response(serializer.data)
     
-    return Response(serializer.data)
+    except ValidationError as e:
+        error_message = str(e)
+        return Response({"detail": error_message.strip("[]").strip("'")}, status=status.HTTP_400_BAD_REQUEST)
+
+    except Exception as e:
+        return Response({"detail": str(e).strip("[]").strip("'")}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
 
 
 #  User requesting other users profile 
