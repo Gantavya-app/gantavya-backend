@@ -7,6 +7,10 @@ This is Django Backend for " Gantavya- A Landmark Recognition System "
 Use the package manager [pip](https://pip.pypa.io/en/stable/) to install all the requirements.
 
 ```bash
+source venv/bin/activate
+```
+
+```bash
 pip install -r requirements.txt
 ```
 
@@ -14,31 +18,8 @@ pip install -r requirements.txt
 python3 -m venv venv
 ```
 
-```bash
-source venv/bin/activate
-```
 
-```bash
-pip install django==4.1.5
-```
+## Know more about the project through this video
 
-```bash
-pip install django-cors-headers
-```
 
-```bash
-pip install djangorestframework
-```
 
-```bash
-pip install djangorestframework-simplejwt
-```
-
-```bash
- pip install rest_framework_simplejwt
-
-```
-
-```bash
-python manage.py runserver
-```
