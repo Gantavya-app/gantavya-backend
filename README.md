@@ -22,4 +22,5 @@ python3 -m venv venv
 ## Know more about the project through this video
 
 
+https://github.com/Gantavya-app/gantavya-backend/assets/62866358/bba65432-852c-49cd-a47d-d9214fb7e81f
 
